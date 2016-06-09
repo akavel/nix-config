@@ -1,11 +1,12 @@
-# TODO(akavel): why doesn't this file require args specification in this line?
-#  ANSWER: because it's just a nix set, not a func. [correct?]
+# NOTE(akavel): this file can be either a set, or a func (both are allowed).
 {
-  # TODO(akavel): how come the `with pkgs_` has a `pkgs` inside? is this some
-  # fixpoint magic?
-  packageOverrides = pkgs_: with pkgs_; {
+  packageOverrides = defaultPkgs: with defaultPkgs; {
+    # NOTE(akavel): `pkgs` below contains "final" packages "from the future",
+    # after all overrides. And `defaultPkgs` contains packages in "pristine"
+    # state (before any of the following overrides were applied).
 
     # "Declarative user profile/config". Install/update with `nix-env -i all`.
+    # (This is a "fake package" named "all".)
     # NOTE(akavel): Aparently `nix-env -iA nixos.all` is a faster variant.
     all = with pkgs; buildEnv {
       # Make it easy to install with `nix-env -i all` [I believe]
@@ -21,6 +22,7 @@
       ];
     };
 
+    # TODO(akavel): as below, or: `neovim = defaultPkgs.neovim.override {` ?
     nvim = pkgs.neovim.override {
       vimAlias = true;
       #configure = {
