@@ -17,6 +17,7 @@
         firefox
         tree
         nvim      # NeoVim + customized config (see below)
+        nix-repl  # REPL for learning Nix
       ];
     };
 
