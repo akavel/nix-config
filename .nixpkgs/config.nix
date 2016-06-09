@@ -16,12 +16,12 @@
       paths = [
         firefox
         tree
-        nvim
+        nvim      # NeoVim + customized config (see below)
       ];
     };
 
     nvim = pkgs.neovim.override {
-      vimAlias = false;
+      vimAlias = true;
       #configure = {
       #};
     };
