@@ -3,7 +3,7 @@
 {
   # TODO(akavel): can I specify the 'pkgs' below in {} curly brackets, or not?
   #  ANSWER: I think not, because e.g. {x} would be "pattern-matching", i.e. would expect pkgs to be a set containing 'x'.
-  packageOverrides = pkgs : {
+  packageOverrides = pkgs_: with pkgs_; {
 
     # "Declarative user profile/config". Installed/updated with `nix-env -i all`.
     # NOTE(akavel): It's apparently faster to use `nix-env -iA nixos.all` instead.
@@ -15,7 +15,14 @@
       paths = [
         firefox
         tree
+        nvim
       ];
+    };
+
+    nvim = pkgs.neovim.override {
+      vimAlias = false;
+      #configure = {
+      #};
     };
   };
 }
