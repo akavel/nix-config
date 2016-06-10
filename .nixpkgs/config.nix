@@ -17,6 +17,7 @@
       paths = [
         firefox
         tree
+        pstree    # print an ascii-art tree of running processes
         nvim      # NeoVim + customized config (see below)
         nix-repl  # REPL for learning Nix
       ];
@@ -24,13 +25,25 @@
 
     # TODO(akavel): as below, or: `neovim = defaultPkgs.neovim.override {` ?
     # TODO(akavel): vim_configurable? or not needed?
+    # FIXME(akavel): ctrl-z doesn't work in neovim (neovim/#3100?); maybe because TERM=linux
+    # - try to provide a Nix repro (deterministic? via docker?) to neovim maintainers
+    # - try to somehow change TERM anyway (?) to fix colors in neovim (e.g. TODO not visible in this file)
     nvim = pkgs.neovim.override {
       vimAlias = true;
       withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
       withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
       configure = {
         # TODO(akavel): implement Vundle support?
-        #vam =
+        # TODO(akavel): consider providing a wrapper over vam to allow auto-downloading plugins by specifying them like:
+        # [
+        #   { fromGitHub="tpope/vim-surround"; hash="..."; sha256="..."; }
+        #   { fromGitHub=... }
+        # ]
+        vam = {
+          pluginDictionaries = [
+            { name = "surround"; }
+          ];
+        };
         customRC = ''
           set expandtab
         '';
