@@ -23,10 +23,18 @@
     };
 
     # TODO(akavel): as below, or: `neovim = defaultPkgs.neovim.override {` ?
+    # TODO(akavel): vim_configurable? or not needed?
     nvim = pkgs.neovim.override {
       vimAlias = true;
-      #configure = {
-      #};
+      withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
+      withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
+      configure = {
+        # TODO(akavel): implement Vundle support?
+        #vam =
+        customRC = ''
+          set expandtab
+        '';
+      };
     };
   };
 }
@@ -83,12 +91,17 @@
 - `let` is recursive and lazy: `let x = x; in x` gives error about infinite
   recursion; `let x = x; in 5` just evaluates to `5`.
 - `with foo; ...` still keeps `foo` visible inside the `...` code.
-- `{ inherit (foo.bar) baz; }` is shortcut for `{ baz = foo.bar.baz; }`.
+- `{ inherit (foo.bar) baz xyzzy; }` is shortcut for `{ baz = foo.bar.baz;
+  xyzzy = foo.bar.xyzzy; }`.
 - `import ./foo/bar.nix arg1 arg2` loads code from ./foo/bar.nix and then
   calls it as a function with arguments `arg1` and `arg2`.
 - `foo.bar or baz` returns `foo.bar` if `foo` has attribute `bar`, or
   expression `baz` otherwise. In other words, `baz` is a "default value" if
   `.bar` is missing.
+- `"foo ${bar.baz}"` evaluates to `bar.baz.outPath` string if present (see also
+  builtins.toString and [nix pill
+  6](http://lethalman.blogspot.com/2014/07/nix-pill-6-our-first-derivation.html)).
+- `foo ? bar` returns true if foo contains attribute bar.
 
 ***** */
 
