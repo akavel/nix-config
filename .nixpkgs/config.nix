@@ -32,39 +32,9 @@
       vimAlias = true;
       withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
       withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
-      configure = {
-        # TODO(akavel): implement Vundle support?
-        # TODO(akavel): consider providing a wrapper over vam to allow auto-downloading plugins by specifying them like:
-        # [
-        #   { fromGitHub="tpope/vim-surround"; hash="..."; sha256="..."; }
-        #   { fromGitHub=... }
-        # ]
-        vam = {
-          pluginDictionaries = [
-            #{ name = "go-explorer"; }
-            { name = "vim-go"; }
-            { name = "ctrlp"; }
-            #{ name = "ack"; }
-            { name = "snipmate"; }
-            # TODO(mateuszc): { name = "deocomplete"; }
-            #{ name = "echodoc"; }
-            { name = "neosnippet"; } # TODO(mateuszc): this or snipmate?
-            { name = "tagbar"; }
-            { name = "fugitive"; }
-            #{ name = "unimpaired"; }
-            { name = "surround"; }
-            { name = "commentary"; }
-            { name = "supertab"; }
-            #{ name = "repeat"; }
-            #{ name = "choosewin"; }
-            #{ name = "splitjoin"; }
-            #{ name = "reload"; }
-          ];
-        };
-        customRC = ''
-          set expandtab
-        '';
-      };
+      #withPython3 = true;   # Required for 'deoplete' plugin
+      # TODO(akavel): test: callPackage ./vimrc.nix {};
+      configure = import ./vimrc.nix;
     };
   };
 
