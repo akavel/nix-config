@@ -41,7 +41,24 @@
         # ]
         vam = {
           pluginDictionaries = [
+            #{ name = "go-explorer"; }
+            { name = "vim-go"; }
+            { name = "ctrlp"; }
+            #{ name = "ack"; }
+            { name = "snipmate"; }
+            # TODO(mateuszc): { name = "deocomplete"; }
+            #{ name = "echodoc"; }
+            { name = "neosnippet"; } # TODO(mateuszc): this or snipmate?
+            { name = "tagbar"; }
+            { name = "fugitive"; }
+            #{ name = "unimpaired"; }
             { name = "surround"; }
+            { name = "commentary"; }
+            { name = "supertab"; }
+            #{ name = "repeat"; }
+            #{ name = "choosewin"; }
+            #{ name = "splitjoin"; }
+            #{ name = "reload"; }
           ];
         };
         customRC = ''
@@ -50,6 +67,11 @@
       };
     };
   };
+
+  # TODO(akavel): somehow change $INPUTRC env path and put inside contents of
+  # current ~/.inputrc file [set coompletion-ignore-case On]
+  # TODO(akavel): create .gitignore.include file (see current
+  # ~/.gitignore.include)
 }
 
 /* **** Notes: *****
