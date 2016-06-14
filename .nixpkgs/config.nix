@@ -1,5 +1,6 @@
 # NOTE(akavel): this file can be either a set, or a func (both are allowed).
 {
+  # TODO(akavel): set $EDITOR to vim
   packageOverrides = defaultPkgs: with defaultPkgs; {
     # NOTE(akavel): `pkgs` below contains "final" packages "from the future",
     # after all overrides. And `defaultPkgs` contains packages in "pristine"

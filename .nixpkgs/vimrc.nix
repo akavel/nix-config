@@ -12,7 +12,9 @@
       { name = "ctrlp"; }
       #{ name = "ack"; }
       { name = "snipmate"; }
-      # TODO(akavel): { name = "deocomplete"; }
+      # TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use
+      # neocomplete
+      #{ name = "deoplete"; }
       #{ name = "echodoc"; }
       { name = "neosnippet"; } # TODO(akavel): this or snipmate?
       # TODO(akavel): tagbar requires 'exuberant ctags'
@@ -144,6 +146,11 @@ com! -nargs=1 -complete=file Breplace edit <args>| bdelete #
 " http://stackoverflow.com/a/14779012/98528 etc.
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
+" Deoplete (auto-completion)
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_auto_select = 1
   '';
 }
 
