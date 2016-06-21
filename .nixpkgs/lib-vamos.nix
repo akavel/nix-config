@@ -9,13 +9,13 @@ let
     vam = {
       pluginDictionaries = pluginsAttr "pluginDictionaries" pluginsList;
       knownPlugins =
-        vimPlugins // (builtins.listToAttrs (pluginsAttr "knownPlugins" pluginsList));
+        vimPlugins // mergeSets (pluginsAttr "knownPlugins" pluginsList);
     };
     customRC = lib.concatStringsSep "\n" (pluginsAttr "config" pluginsList);
   };
 
   pluginsAttr = attr: pluginsList:
-    listAttr attr (map toVamWithConfig pluginsList);
+    lib.catAttrs attr (map toVamWithConfig pluginsList);
   toVamWithConfig = plugin: (toVam plugin) // (
     if plugin ? config then {
       config = plugin.config;
@@ -24,23 +24,20 @@ let
     if plugin ? fromGitHub then {
       pluginDictionaries = { name = nameFromGitHub plugin; };
       knownPlugins = {
-        name = nameFromGitHub plugin;
-        value = buildFromGitHub plugin;
+        ${nameFromGitHub plugin} = buildFromGitHub plugin;
       };
     } else if plugin ? fromVam then {
       pluginDictionaries = { name = plugin.fromVam; };
       knownPlugins = {
-        name = plugin.fromVam;
-        value = builtins.getAttr plugin.fromVam vimPlugins;
+        ${plugin.fromVam} = builtins.getAttr plugin.fromVam vimPlugins;
       };
     } else {};
-
-  listAttr = attr: list:
-    map (builtins.getAttr attr) (builtins.filter (builtins.hasAttr attr) list);
+  mergeSets = listOfSets:
+    builtins.foldl' (x: y: x//y) {} listOfSets;
 
   nameFromGitHub = plugin:
     baseNameOf plugin.fromGitHub;
-  buildFromGitHub = plugin: with builtins;
+  buildFromGitHub = plugin:
     let
       repo = baseNameOf plugin.fromGitHub;
       owner = lib.removeSuffix "/${repo}" plugin.fromGitHub;
