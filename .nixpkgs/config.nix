@@ -26,7 +26,8 @@
 
     # TODO(akavel): as below, or: `neovim = defaultPkgs.neovim.override {` ?
     # TODO(akavel): vim_configurable? or not needed?
-    # FIXME(akavel): ctrl-z doesn't work in neovim (neovim/#3100?); maybe because TERM=linux
+    # FIXME(akavel): use patched neovim with fixed ctrl-z (neovim/#3100)
+    # TODO(akavel): use vim/neovim as default editor for git commit
     # - try to provide a Nix repro (deterministic? via docker?) to neovim maintainers
     # - try to somehow change TERM anyway (?) to fix colors in neovim (e.g. TODO not visible in this file)
     nvim = pkgs.neovim.override {
