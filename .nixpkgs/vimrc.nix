@@ -19,8 +19,6 @@ Plugin 'sjl/gundo.vim'
 " dependency (vim-misc)
  Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-reload'
-" Highlighting of ANSI escape-coded colours
-Plugin 'powerman/vim-plugin-AnsiEsc'
 "Plugin 'suan/vim-instant-markdown'
 " Personal test plugin
 Plugin '~/.vim/bundle/notepoints/.git'
@@ -39,8 +37,7 @@ Plugin '~/.vim/bundle/notepoints/.git'
 " TODO: https://github.com/fatih/dotfiles/blob/master/vimrc
 " alt.to above: "tabbar.vim" http://www.vim.org/scripts/script.php?script_id=1338
 */
-# TODO(akavel): allow using { fromVam="...name..."; } in vamos; or just [ ... some_vam_name  other_vam_name ... ]
-# TODO(akavel): refactor vamos to make its code readable
+# TODO(akavel): refactor vamos to make its code more readable
 vamos [
 
   { fromGitHub="garyburd/go-explorer"; rev="6a82202d18e3b4a4a06b6c22769ee9511335e6ae"; sha256="1padb45fhnqxwazgmlx237c247c2naj4cfl2x28y9w7kavsqnmi5"; }
@@ -133,6 +130,7 @@ vamos [
 
   # Highlighting of ANSI escape-coded colours
   { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
+
   # Other .vimrc settings, not plugin-related
   { config = ''
 
