@@ -23,7 +23,7 @@ let
       owner = builtins.substring 0 (len plugin.fromGitHub - len repo - 1) plugin.fromGitHub;
     in {
       inherit name;
-      value = vimUtils.buildVimPlugin {
+      value = vimUtils.buildVimPluginFrom2Nix {
         inherit name;
         src = fetchFromGitHub {
           # owner, repo, rev, sha256
