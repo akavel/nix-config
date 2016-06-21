@@ -1,16 +1,23 @@
 # TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
 { vimUtils, vimPlugins, fetchFromGitHub, ... }:
 let
+  /* vamos is a helper/wrapper for vim plugin manager named "vam".
+     It allows to specify plugins like below:
+     TODO(akavel): add example usage & explain
+  */
   vamos = list: {
     vam = {
-      pluginDictionaries = map toVamPD list;
+      pluginDictionaries = map toVamPD (onlyGitHub list);
       knownPlugins = {
         "vim-addon-manager" = vimPlugins."vim-addon-manager";
-      } // (builtins.listToAttrs (map toVamKP list));
+      } // (builtins.listToAttrs (map toVamKP (onlyGitHub list)));
     };
-    # TODO(akavel): customRC = ...
+    customRC = builtins.foldl' (x: y: x+"\n"+y) "" (
+      map (plugin: plugin.config or "") list
+    );
   };
 
+  onlyGitHub = list: builtins.filter (p: p ? fromGitHub) list;
   # FIXME(akavel): slash ('/') in names is not allowed for vimUtils
   #toVamName = { fromGitHub, ... }: fromGitHub;
   toVamName = { fromGitHub, ... }: baseNameOf fromGitHub;
@@ -234,6 +241,14 @@ let g:deoplete#enable_auto_select = 1
 } // (vamos [
   # Highlighting of ANSI escape-coded colours
   { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
+  { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0";
+    config = ''
+      " vim-choosewin
+      nmap - <Plug>(choosewin)
+      " let g:choosewin_overlay_enable = 1
+      let g:choosewin_overlay_enable = 0
+      ''; }
+  { config = ''" hello''; }
 ])
 
 /* TODO: vim plugins & config:
