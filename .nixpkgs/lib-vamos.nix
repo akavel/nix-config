@@ -3,7 +3,35 @@
 let
   /* vamos is a helper/wrapper for vim plugin manager named "vam".
      It allows to specify plugins like below:
-     TODO(akavel): add example usage & explain
+
+        vamos = import ./lib-vamos.nix pkgs;
+        nvim = pkgs.neovim.override {
+          configure = vamos [
+
+            { fromVam="surround"; }
+
+            { fromVam="ctrlp"; config=''
+                let g:ctrlp_extensions = ['mixed', 'line', 'buffertag', 'tag']
+                let g:ctrlp_custom_ignore = '\v\.pyc''$'
+              ''; }
+
+            { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
+
+            { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0";
+              config=''
+                nmap - <Plug>(choosewin)
+                " let g:choosewin_overlay_enable = 1
+                let g:choosewin_overlay_enable = 0
+              ''; }
+
+            { config = ''
+                " indentation settings
+                set expandtab           " replace TABs with spaces
+                set autoindent
+              ''; }
+
+          ];
+        };
   */
   vamos = pluginsList: {
     vam = {
