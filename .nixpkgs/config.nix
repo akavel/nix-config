@@ -38,6 +38,8 @@
       # TODO(akavel): test: callPackage ./vimrc.nix {};
       configure = import ./vimrc.nix pkgs;
     };
+
+    vamos = import ./lib-vamos.nix pkgs;
   };
 
   # TODO(akavel): somehow change $INPUTRC env path and put inside contents of

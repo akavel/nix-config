@@ -1,122 +1,97 @@
 # TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
-{ vimUtils, vimPlugins, fetchFromGitHub, ... }:
-let
-  /* vamos is a helper/wrapper for vim plugin manager named "vam".
-     It allows to specify plugins like below:
-     TODO(akavel): add example usage & explain
-  */
-  vamos = list: {
-    vam = {
-      pluginDictionaries = map toVamPD (onlyGitHub list);
-      knownPlugins = {
-        "vim-addon-manager" = vimPlugins."vim-addon-manager";
-      } // (builtins.listToAttrs (map toVamKP (onlyGitHub list)));
-    };
-    customRC = builtins.foldl' (x: y: x+"\n"+y) "" (
-      map (plugin: plugin.config or "") list
-    );
-  };
-
-  onlyGitHub = list: builtins.filter (p: p ? fromGitHub) list;
-  # FIXME(akavel): slash ('/') in names is not allowed for vimUtils
-  #toVamName = { fromGitHub, ... }: fromGitHub;
-  toVamName = { fromGitHub, ... }: baseNameOf fromGitHub;
-  toVamPD = plugin: { name = toVamName plugin; };
-  toVamKP = plugin: 
-    let
-      name = toVamName plugin;
-      len = builtins.stringLength;
-      repo = baseNameOf plugin.fromGitHub;
-      owner = builtins.substring 0 (len plugin.fromGitHub - len repo - 1) plugin.fromGitHub;
-    in {
-      inherit name;
-      value = vimUtils.buildVimPluginFrom2Nix {
-        inherit name;
-        src = fetchFromGitHub {
-          # owner, repo, rev, sha256
-          inherit (plugin) rev sha256;
-          inherit owner repo;
-        };
-      };
-    };
-
-in {
+{ vimUtils, vimPlugins, fetchFromGitHub, vamos, ... }:
 /*
-TODO: build a custom wrapper over vam. Specify plugins like:
-  [
-    { fromGitHub="tpope/vim-surround"; hash="..."; sha256="..."; config="...vimrc..." }
-    { fromGitHub=... }
-  ]
-
-- pkgs/misc/vim-plugins/vim-utils.nix
-  - `vimrcFile` is used by neovim to build vimrc (based on 'configuration' property of neovim derivation).
-- vam seems to need for its rcfile:
-  - knownPlugins.${name}.rtp
-    - where ${name} iterates over 'names'
-  - toNix p
-    - where p iterates over 'vam.pluginDictionaries'
-- use buildVimPlugin
-- ideally, don't use splitString, as its doc states it's very inefficient.
-
-let
-  toVamName = { fromGitHub, ... }: fromGitHub;
-  toVamPD = plugin: { name = toVamName plugin; };
-  toVamKP = plugin: 
-    let
-      name = toVamName plugin;
-      len = builtins.stringLength;
-      repo = baseNameOf plugin.fromGitHub;
-      owner = builtins.substring 0 (len plugin.fromGitHub - len repo - 1) plugin.fromGitHub;
-    in {
-      inherit name;
-      value = buildVimPlugin {
-        inherit name;
-        src = fetchFromGitHub (plugin // {
-          # owner, repo, rev, sha256
-          inherit owner repo;
-        });
-      };
-    };
-  plugins = list: {
-    vam = {
-      pluginDictionaries = map toVamPD list;
-      knownPlugins = builtins.listToAttrs (map toVamKP list);
-    };
-  };
+Plugin 'garyburd/go-explorer'
+" Go language support for vim
+Plugin 'fatih/vim-go'
+"Plugin 'akavel/vim-go', {'name': 'akavel-vim-go'}
+" Smart and quick file opening with Ctrl-P
+Plugin 'kien/ctrlp.vim'
+" Csearch is a fast alternative to grep, but requires pre-indexing.
+Plugin 'brandonbloom/csearch.vim'
+" Ack is a better featured alternative to grep.
+Plugin 'ack.vim'
+" Attempt at multiple cursors like in SublimeText.
+" NOTE: try some alternative, this is fairly limited.
+Plugin 'terryma/vim-multiple-cursors'
+" Code snippets for vim.
+" vim-snipmate has 2 dependencies below:
+ Plugin 'MarcWeber/vim-addon-mw-utils'
+ Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+" Smart code completion.
+" TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use neocomplete
+Plugin 'Shougo/neocomplete'
+Plugin 'Shougo/echodoc.vim'
+" Another attempt at code snippets.
+" TODO(akavel): this or snipmate?
+Plugin 'Shougo/neosnippet'
+" Show an outline of current source file in a split.
+Plugin 'majutsushi/tagbar'
+" Simple TODO lists; flaky folding, unfortunately
+" TODO: improve workflowish
+Plugin 'lukaszkorecki/workflowish'
+" Git
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-unimpaired'
+" Python code completion, docs & related
+Plugin 'davidhalter/jedi-vim'
+" List buffers on top as if they were "tabs"
+"Plugin 'fholgado/minibufexpl.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+"alternative: Plugin 'scrooloose/nerdcommenter'
+"alternative: https://github.com/tomtom/tcomment_vim
+Plugin 'godlygeek/tabular'
+Plugin 'Lokaltog/vim-easymotion'
+" Visualize the undo tree
+Plugin 'sjl/gundo.vim'
+" Filesystem explorer
+" Plugin 'scrooloose/nerdtree'
+Plugin 'ervandew/supertab'
+Plugin 'tpope/vim-repeat'
+" Increase/decrease selection with +/_
+Plugin 'terryma/vim-expand-region'
+" Choose window (split) by number
+Plugin 't9md/vim-choosewin'
+Plugin 'AndrewRadev/splitjoin.vim'
+" Auto-reloading of edited plugin files (for plugins development) + 1
+" dependency (vim-misc)
+ Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-reload'
+" Highlighting of ANSI escape-coded colours
+Plugin 'powerman/vim-plugin-AnsiEsc'
+"Plugin 'suan/vim-instant-markdown'
+" Personal test plugin
+Plugin '~/.vim/bundle/notepoints/.git'
+" TODO: Plugin 'tpope/vim-sleuth' ?
+" TODO: or: Plugin 'ciaranm/detectindent' ?
+" TODO: Plugin 'scrooloose/syntastic' ?
+" TODO: Plugin 'bling/vim-airline' ?
+" TODO: Plugin 'tpope/vim-obsession' ?
+" TODO: Plugin 'tpope/vim-jdaddy' ?
+" TODO: http://spf13.com/project/spf13-vim/
+" TODO: https://github.com/mbrochh/vim-as-a-python-ide/blob/master/.vimrc
+" TODO: http://vimcasts.org/blog/2014/02/follow-my-leader/
+" TODO: https://github.com/tpope/vim-sensible
+" TODO: http://items.sjbach.com/319/configuring-vim-right
+" TODO: https://github.com/sheerun/dotfiles
+" TODO: https://github.com/fatih/dotfiles/blob/master/vimrc
+" alt.to above: "tabbar.vim" http://www.vim.org/scripts/script.php?script_id=1338
 */
-
-  # TODO(akavel): implement Vundle support?
-  # TODO(akavel): consider providing a wrapper over vam to allow auto-downloading plugins by specifying them like:
-  # [
-  #   { fromGitHub="tpope/vim-surround"; hash="..."; sha256="..."; config="...vimrc..." }
-  #   { fromGitHub=... }
-  # ]
-  vam = {
-    pluginDictionaries = [
-      #{ name = "go-explorer"; }
-      { name = "vim-go"; }
-      { name = "ctrlp"; }
-      #{ name = "ack"; }
-      { name = "snipmate"; }
-      # TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use
-      # neocomplete
-      #{ name = "deoplete"; }
-      #{ name = "echodoc"; }
-      { name = "neosnippet"; } # TODO(akavel): this or snipmate?
-      # TODO(akavel): tagbar requires 'exuberant ctags'
-      { name = "tagbar"; }
-      { name = "fugitive"; }
-      #{ name = "unimpaired"; }
-      { name = "surround"; }
-      { name = "commentary"; }
-      { name = "supertab"; }
-      #{ name = "repeat"; }
-      #{ name = "choosewin"; }
-      #{ name = "splitjoin"; }
-      #{ name = "reload"; }
-    ];
-  };
-  customRC = ''
+# TODO(akavel): allow using { fromVam="...name..."; } in vamos; or just [ ... some_vam_name  other_vam_name ... ]
+# TODO(akavel): refactor vamos to make its code readable
+vamos [
+  # Highlighting of ANSI escape-coded colours
+  { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
+  { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0"; config=''
+      " vim-choosewin
+      nmap - <Plug>(choosewin)
+      " let g:choosewin_overlay_enable = 1
+      let g:choosewin_overlay_enable = 0
+    ''; }
+  # Other .vimrc settings, not plugin-related
+  { config = ''
 
 " indentation settings
 set expandtab           " replace TABs with spaces
@@ -140,10 +115,7 @@ set listchars+=precedes:«
 set listchars+=extends:»
 set sidescroll=5
 
-" install CtrlP plugin for opening files by fuzzy path match, like in
-" SublimeText
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-" Tweaks:
+" CtrlP plugin for opening files by fuzzy path match, like in SublimeText
 let g:ctrlp_extensions = ['mixed', 'line', 'buffertag', 'tag']
 let g:ctrlp_custom_ignore = '\v\.pyc''$'
 
@@ -237,19 +209,8 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_ignore_case = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_auto_select = 1
-  '';
-} // (vamos [
-  # Highlighting of ANSI escape-coded colours
-  { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
-  { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0";
-    config = ''
-      " vim-choosewin
-      nmap - <Plug>(choosewin)
-      " let g:choosewin_overlay_enable = 1
-      let g:choosewin_overlay_enable = 0
-      ''; }
-  { config = ''" hello''; }
-])
+ ''; }
+]
 
 /* TODO: vim plugins & config:
 " Vundle?
