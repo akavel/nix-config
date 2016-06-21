@@ -1,4 +1,48 @@
 {
+/*
+TODO: build a custom wrapper over vam. Specify plugins like:
+  [
+    { fromGitHub="tpope/vim-surround"; hash="..."; sha256="..."; config="...vimrc..." }
+    { fromGitHub=... }
+  ]
+
+- pkgs/misc/vim-plugins/vim-utils.nix
+  - `vimrcFile` is used by neovim to build vimrc (based on 'configuration' property of neovim derivation).
+- vam seems to need for its rcfile:
+  - knownPlugins.${name}.rtp
+    - where ${name} iterates over 'names'
+  - toNix p
+    - where p iterates over 'vam.pluginDictionaries'
+- use buildVimPlugin
+- ideally, don't use splitString, as its doc states it's very inefficient.
+
+let
+  toVamName = { fromGitHub, ... }: fromGitHub;
+  toVamPD = plugin: { name = toVamName plugin; };
+  toVamKP = plugin: 
+    let
+      name = toVamName plugin;
+      len = builtins.stringLength;
+      repo = baseNameOf plugin.fromGitHub;
+      owner = builtins.substring 0 (len plugin.fromGitHub - len repo - 1) plugin.fromGitHub;
+    in {
+      inherit name;
+      value = buildVimPlugin {
+        inherit name;
+        src = fetchFromGitHub (plugin // {
+          # owner, repo, rev, sha256
+          inherit owner repo;
+        });
+      };
+    };
+  plugins = list: {
+    vam = {
+      pluginDictionaries = map toVamPD list;
+      knownPlugins = builtins.listToAttrs (map toVamKP list);
+    };
+  };
+*/
+
   # TODO(akavel): implement Vundle support?
   # TODO(akavel): consider providing a wrapper over vam to allow auto-downloading plugins by specifying them like:
   # [
