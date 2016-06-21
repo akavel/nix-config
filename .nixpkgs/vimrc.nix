@@ -1,4 +1,39 @@
-{
+# TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
+{ vimUtils, vimPlugins, fetchFromGitHub, ... }:
+let
+  vamos = list: {
+    vam = {
+      pluginDictionaries = map toVamPD list;
+      knownPlugins = {
+        "vim-addon-manager" = vimPlugins."vim-addon-manager";
+      } // (builtins.listToAttrs (map toVamKP list));
+    };
+    # TODO(akavel): customRC = ...
+  };
+
+  # FIXME(akavel): slash ('/') in names is not allowed for vimUtils
+  #toVamName = { fromGitHub, ... }: fromGitHub;
+  toVamName = { fromGitHub, ... }: baseNameOf fromGitHub;
+  toVamPD = plugin: { name = toVamName plugin; };
+  toVamKP = plugin: 
+    let
+      name = toVamName plugin;
+      len = builtins.stringLength;
+      repo = baseNameOf plugin.fromGitHub;
+      owner = builtins.substring 0 (len plugin.fromGitHub - len repo - 1) plugin.fromGitHub;
+    in {
+      inherit name;
+      value = vimUtils.buildVimPlugin {
+        inherit name;
+        src = fetchFromGitHub {
+          # owner, repo, rev, sha256
+          inherit (plugin) rev sha256;
+          inherit owner repo;
+        };
+      };
+    };
+
+in {
 /*
 TODO: build a custom wrapper over vam. Specify plugins like:
   [
@@ -196,7 +231,10 @@ let g:deoplete#enable_ignore_case = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_auto_select = 1
   '';
-}
+} // (vamos [
+  # Highlighting of ANSI escape-coded colours
+  { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
+])
 
 /* TODO: vim plugins & config:
 " Vundle?

@@ -36,7 +36,7 @@
       withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
       #withPython3 = true;   # Required for 'deoplete' plugin
       # TODO(akavel): test: callPackage ./vimrc.nix {};
-      configure = import ./vimrc.nix;
+      configure = import ./vimrc.nix pkgs;
     };
   };
 
