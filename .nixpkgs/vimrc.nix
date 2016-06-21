@@ -1,60 +1,20 @@
 # TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
 { vimUtils, vimPlugins, fetchFromGitHub, vamos, ... }:
 /*
-Plugin 'garyburd/go-explorer'
-" Go language support for vim
-Plugin 'fatih/vim-go'
-"Plugin 'akavel/vim-go', {'name': 'akavel-vim-go'}
-" Smart and quick file opening with Ctrl-P
-Plugin 'kien/ctrlp.vim'
-" Csearch is a fast alternative to grep, but requires pre-indexing.
-Plugin 'brandonbloom/csearch.vim'
-" Ack is a better featured alternative to grep.
-Plugin 'ack.vim'
-" Attempt at multiple cursors like in SublimeText.
-" NOTE: try some alternative, this is fairly limited.
-Plugin 'terryma/vim-multiple-cursors'
-" Code snippets for vim.
-" vim-snipmate has 2 dependencies below:
- Plugin 'MarcWeber/vim-addon-mw-utils'
- Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-" Smart code completion.
-" TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use neocomplete
-Plugin 'Shougo/neocomplete'
-Plugin 'Shougo/echodoc.vim'
-" Another attempt at code snippets.
-" TODO(akavel): this or snipmate?
-Plugin 'Shougo/neosnippet'
-" Show an outline of current source file in a split.
-Plugin 'majutsushi/tagbar'
 " Simple TODO lists; flaky folding, unfortunately
 " TODO: improve workflowish
 Plugin 'lukaszkorecki/workflowish'
-" Git
-Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-unimpaired'
 " Python code completion, docs & related
 Plugin 'davidhalter/jedi-vim'
 " List buffers on top as if they were "tabs"
 "Plugin 'fholgado/minibufexpl.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-"alternative: Plugin 'scrooloose/nerdcommenter'
-"alternative: https://github.com/tomtom/tcomment_vim
 Plugin 'godlygeek/tabular'
 Plugin 'Lokaltog/vim-easymotion'
 " Visualize the undo tree
 Plugin 'sjl/gundo.vim'
 " Filesystem explorer
 " Plugin 'scrooloose/nerdtree'
-Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-repeat'
-" Increase/decrease selection with +/_
-Plugin 'terryma/vim-expand-region'
-" Choose window (split) by number
-Plugin 't9md/vim-choosewin'
-Plugin 'AndrewRadev/splitjoin.vim'
 " Auto-reloading of edited plugin files (for plugins development) + 1
 " dependency (vim-misc)
  Plugin 'xolox/vim-misc'
@@ -82,15 +42,97 @@ Plugin '~/.vim/bundle/notepoints/.git'
 # TODO(akavel): allow using { fromVam="...name..."; } in vamos; or just [ ... some_vam_name  other_vam_name ... ]
 # TODO(akavel): refactor vamos to make its code readable
 vamos [
-  { fromVam="ctrlp"; }
-  # Highlighting of ANSI escape-coded colours
-  { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
+
+  { fromGitHub="garyburd/go-explorer"; rev="6a82202d18e3b4a4a06b6c22769ee9511335e6ae"; sha256="1padb45fhnqxwazgmlx237c247c2naj4cfl2x28y9w7kavsqnmi5"; }
+
+  # Go language support for vim
+  { fromVam="vim-go"; }
+
+  # Smart and quick file opening with Ctrl-P, by fuzzy path match, like in SublimeText
+  { fromVam="ctrlp"; config=''
+      let g:ctrlp_extensions = ['mixed', 'line', 'buffertag', 'tag']
+      let g:ctrlp_custom_ignore = '\v\.pyc''$'
+    ''; }
+
+  # Csearch is a fast alternative to grep, but requires pre-indexing.
+  # TODO(akavel): Plugin 'brandonbloom/csearch.vim'
+
+  # Ack is a better featured alternative to grep.
+  # TODO(akavel): Plugin 'ack.vim'
+
+  # Attempt at multiple cursors like in SublimeText.
+  # NOTE: try some alternative, this is fairly limited.
+  # TODO(akavel): Plugin 'terryma/vim-multiple-cursors'
+
+  # Code snippets for vim.
+  # TODO(akavel): how to configure snippets in a file in Nix store?
+  { fromVam="snipmate"; }
+
+  # Smart code completion.
+  # TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use neocomplete
+  # TODO(akavel): Plugin 'Shougo/neocomplete'
+  #{ fromVam="neocomplete"; config=''
+  #    "let g:neocomplete#data_directory = "~/.vim/tmp/swap"
+  #    let g:neocomplete#data_directory = "/tmp/neocomplete-swap"
+  #    " Use neocomplete.
+  #    let g:neocomplete#enable_at_startup = 1
+  #    " Enable heavy omni completion.
+  #    if !exists('g:neocomplete#sources#omni#input_patterns')
+  #        let g:neocomplete#sources#omni#input_patterns = {}
+  #    endif
+  #    " golang fix
+  #    let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
+  #    let g:neocomplete#enable_ignore_case = 1
+  #    let g:neocomplete#enable_smart_case = 1
+  #    let g:neocomplete#enable_auto_select = 1
+  #  ''; }
+
+  { fromGitHub="Shougo/echodoc.vim"; rev="5b883e6f36db14f2396be0e949f1cd44929149eb"; sha256="1m1rl5px9jd94b7ykf4qxcmznaaasrj3x9mraj0yqxjb3rnml1bd"; config=''
+      let g:echodoc_enable_at_startup = 1
+      set cmdheight=2
+    ''; }
+
+  # Another attempt at code snippets.
+  # TODO(akavel): this or snipmate?
+  { fromVam="neosnippet"; }
+
+  # Show an outline of current source file in a split.
+  # TODO(akavel): tagbar requires 'exuberant ctags'
+  # TODO(akavel): Plugin 'majutsushi/tagbar'
+  # " tagbar
+  # nmap <F8> :TagbarToggle<CR>
+  # let g:tagbar_sort = 0
+  # let g:tagbar_compact = 1
+  # let g:tagbar_show_linenumbers = 1
+  # " auto-open TagBar. (See :help tagbar for alternatives.)
+  # "autocmd VimEnter * nested :TagbarOpen
+
+  # Git
+  { fromVam="fugitive"; }
+
+  { fromVam="surround"; }
+
+  { fromVam="commentary"; }
+
+  { fromVam="supertab"; }
+
+  { fromGitHub="tpope/vim-repeat"; rev="7a6675f092842c8f81e71d5345bd7cdbf3759415"; sha256="0p8g5y3vyl1765lj1r8jpc06l465f9bagivq6k8ndajbg049brl7"; }
+
+  # Increase/decrease selection with +/_
+  { fromGitHub="terryma/vim-expand-region"; rev="v1.2"; sha256="0ab3jq47mc5dxx19isz3w6bhvq3j9ilxrkp7i08l3s94kwc7pg2y"; }
+
+  # Choose window (split) by number, by pressing -
   { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0"; config=''
-      " vim-choosewin
       nmap - <Plug>(choosewin)
       " let g:choosewin_overlay_enable = 1
       let g:choosewin_overlay_enable = 0
     ''; }
+
+  # Press `gS` on line to split it smart, or `gJ` on first line of block to join it smart.
+  { fromGitHub="AndrewRadev/splitjoin.vim"; rev="a206dbaddef39ac06aee880fbb7a7256bce92899"; sha256="19mwkpg4zq02i1n3xx4apblcm1ckf1vqavybny2qm7ndh003dgs4"; }
+
+  # Highlighting of ANSI escape-coded colours
+  { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
   # Other .vimrc settings, not plugin-related
   { config = ''
 
@@ -115,10 +157,6 @@ set listchars+=trail:×
 set listchars+=precedes:«
 set listchars+=extends:»
 set sidescroll=5
-
-" CtrlP plugin for opening files by fuzzy path match, like in SublimeText
-let g:ctrlp_extensions = ['mixed', 'line', 'buffertag', 'tag']
-let g:ctrlp_custom_ignore = '\v\.pyc''$'
 
 " In command-line, use similar navigation keys like in bash/readline
 " http://stackoverflow.com/a/6923282/98528
@@ -145,25 +183,6 @@ set foldnestmax=10
 set nofoldenable
 set foldlevel=10
 
-" Neocomplete
-"let g:neocomplete#data_directory = "~/.vim/tmp/swap"
-let g:neocomplete#data_directory = "/tmp/neocomplete-swap"
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-endif
-" golang fix
-let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
-let g:neocomplete#enable_ignore_case = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_select = 1
-
-" echodoc
-let g:echodoc_enable_at_startup = 1
-set cmdheight=2
-
 " Neosnippet
 let g:neosnippet#disable_runtime_snippets = {'_': 1}
 let g:neosnippet#enable_snipmate_compatibility = 1
@@ -171,14 +190,6 @@ let g:neosnippet#snippets_directory = '~/.vim/snippets'
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" tagbar
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_sort = 0
-let g:tagbar_compact = 1
-let g:tagbar_show_linenumbers = 1
-" auto-open TagBar. (See :help tagbar for alternatives.)
-"autocmd VimEnter * nested :TagbarOpen
 
 " modeline: allows settings tweaking per edited file, by special magic comment
 " starting with 'vim:'
