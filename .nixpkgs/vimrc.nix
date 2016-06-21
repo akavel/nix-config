@@ -82,6 +82,7 @@ Plugin '~/.vim/bundle/notepoints/.git'
 # TODO(akavel): allow using { fromVam="...name..."; } in vamos; or just [ ... some_vam_name  other_vam_name ... ]
 # TODO(akavel): refactor vamos to make its code readable
 vamos [
+  { fromVam="ctrlp"; }
   # Highlighting of ANSI escape-coded colours
   { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
   { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0"; config=''

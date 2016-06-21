@@ -5,24 +5,36 @@ let
      It allows to specify plugins like below:
      TODO(akavel): add example usage & explain
   */
-  vamos = list: {
+  vamos = pluginsList: {
     vam = {
-      pluginDictionaries = map toVamPD (onlyGitHub list);
-      knownPlugins = {
+      pluginDictionaries = map toVamPD (builtins.filter needsVam pluginsList);
+      knownPlugins = vimPlugins // {
         "vim-addon-manager" = vimPlugins."vim-addon-manager";
-      } // (builtins.listToAttrs (map toVamKP (onlyGitHub list)));
+      } // (builtins.listToAttrs (map toVamKP (onlyGitHub pluginsList)));
     };
     customRC = builtins.foldl' (x: y: x+"\n"+y) "" (
-      map (plugin: plugin.config or "") list
+      map (plugin: plugin.config or "") pluginsList
     );
   };
 
+  needsVam = plugin: plugin ? fromGitHub || plugin ? fromVam;
+
   onlyGitHub = list: builtins.filter (p: p ? fromGitHub) list;
-  # FIXME(akavel): slash ('/') in names is not allowed for vimUtils
-  #toVamName = { fromGitHub, ... }: fromGitHub;
-  toVamName = { fromGitHub, ... }: baseNameOf fromGitHub;
+  # TODO(akavel): slash ('/') in names is not allowed for vimUtils - but I'd like to have it ?
+  toVamName = plugin:
+    if plugin ? fromGitHub then
+      baseNameOf plugin.fromGitHub
+    else if plugin ? fromVam then
+      plugin.fromVam
+    else throw "vamos can't handle plugin $(toString plugin)";
   toVamPD = plugin: { name = toVamName plugin; };
-  toVamKP = plugin: 
+  toVamKP = plugin:
+    if plugin ? fromGitHub then
+      knownFromGitHub plugin
+    else if plugin ? fromVam then
+      { name=plugin.fromVam; value=builtins.getAttr plugin.fromVam vimPlugins; }
+    else throw "vamos can't handle plugin $(toString plugin)";
+  knownFromGitHub = plugin:
     let
       name = toVamName plugin;
       len = builtins.stringLength;
