@@ -1,0 +1,121 @@
+- fix non-working Ctrl-Z in NeoVim with TERM=linux issue
+  - attack 1:
+    - echo $NIX_PATH   # wiki:Nix_Modifying_Packages
+    - # wiki:Create_and_debug_nix_packages
+    - nix-shell /nix/var/nix/profiles/per-user/root/channels/nixos -A neovim
+    - export out=/tmp/foo/out
+    - # for education, check `typeset -f genericBuild`
+    - eval "${unpackPhase:-unpackPhase}"         # if "$unpackPhase" is non-empty, runs its contents; otherwise runs shell function `unpackPhase`
+    - cd $sourceRoot
+    - eval "${patchPhase:-patchPhase}"
+    - eval "${configurePhase:-configurePhase}"
+    - eval "${buildPhase:-buildPhase}"
+    - # NOTE(akavel): not sure if it should be :-$unpackPhase or :-unpackPhase etc. above; neither of those works in all cases
+- fix colors in NeoVim (TODO in .nix files)
+  - TODO: what are my colors in vim at work?
+- TODO: fix timezone in global configuration.nix
+- TODO: test 'nox'
+- vim plugins
+  - need .vimrc in $HOME
+    - manage via mgit + Nix
+  - how does some 'vim with plugins' in Nix (if present?) handle enabling them (creating vimrc) when run as user now?
+
+- snippet 0: "merge 'neovim.nix' or 'vimPackages.nix' into systemPackages"
+
+    #--- /etc/nixos/configuration.nix ---#
+    #...
+    environment.systemPackages = let
+      vimPackages = import /SOME/PATH/vimPackages.nix pkgs;
+      #neovimPackages = import /SOME/PATH/neovim.nix pkgs;
+    in
+      vimPackages ++ with pkgs; [
+        # some other packages
+      ];
+    #...
+
+- snippet 1: "neovim.nix" ?
+
+    # TODO(akavel): how is below loaded into system/user configuration?
+    { pkgs }:
+    let
+      nvim = pkgs.neovim.override {
+        #vimAlias = false;
+        # TODO(akavel): how's 'configure' handled? by 'override' above? which comes from mkOverridable?
+        configure = (import ./vim/customization.nix { pkgs = pkgs; });
+      };
+    in [
+      nvim
+      pkgs.python
+      pkgs.ctags
+    ]
+ 
+ - snippet 2: "vimPackages.nix" ?
+
+    { pkgs, lib, ... }:
+    let
+      customization = {
+        vimrcConfig = (import ./vim/customization.nix { pkgs = pkgs; });
+      } // {
+        name = "vim";
+      }
+      # NOTE(akavel): vim_configurable is built with composableDerivation (instead of X.override)
+      # because it existed earlier, and it's this way now only for historical reasons (could be
+      # rewritten). This is explained in comment to composableDerivation.
+      custom_vim = pkgs.vim_configurable.customize customization;
+      # TODO(akavel): how does `overrideDerivation X` differ from `X.override`?
+      vim = lib.overrideDerivation custom_vim (o: {
+        gui = false;
+        luaSupport = true;
+      });
+    in [
+      vim
+      pkgs.python
+      pkgs.ctags
+    ]
+
+ - snippet 3: "utils for snippets 1 & 2"
+
+    #--- ./vim/customization.nix ---#
+    { pkgs }:
+    let
+      # TODO(akavel): what callPackage does? (some stuff with 'inherit'?)
+      vimrc   = pkgs.callPackage ./vimrc.nix {};
+      plugins = pkgs.callPackage ./plugins.nix {};
+    in {
+      customRC = vimrc;
+      vam = {
+        knownPlugins = pkgs.vimPlugins // plugins;
+        # TODO(akavel): wtf?
+        pluginDictionaries = [
+          { name = "youcompleteme"; }
+          { name = "vim-trailing-whitespace"; }
+        ];
+      };
+    }
+      
+    #--- ./vim/plugins.nix ---#
+    { pkgs, fetchgit }:
+    let
+      buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
+    in {
+      "vim-trailing-whitespace" = buildVimPlugin {
+        name = "vim-trailing-whitespace";
+        src = fetchgit {
+          url = "https://github.com/.../...";
+          hash = "...";
+          sha256 = "...";
+        };
+        dependencies = [];
+      };
+    }
+
+    #--- ./vim/vimrc.nix ---#
+    { stdenv, writeText }:
+    let
+      foo = builtins.readFile ./vimrc/foo.vim;
+      bar = builtins.readFile ./vimrc/bar.vim;
+    in ''
+      ${foo}
+      ${bar}
+    ''
+
