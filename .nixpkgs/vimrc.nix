@@ -1,5 +1,5 @@
 # TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
-{ vimUtils, vimPlugins, fetchFromGitHub, vamos, ... }:
+{ vamos, ... }:
 /*
 " Simple TODO lists; flaky folding, unfortunately
 " TODO: improve workflowish
@@ -223,89 +223,6 @@ let g:deoplete#enable_auto_select = 1
 ]
 
 /* TODO: vim plugins & config:
-" Vundle?
-" Vundle: Add plugins below. (Note: above line is required)
-Plugin 'garyburd/go-explorer'
-" Go language support for vim
-Plugin 'fatih/vim-go'
-"Plugin 'akavel/vim-go', {'name': 'akavel-vim-go'}
-" Smart and quick file opening with Ctrl-P
-Plugin 'kien/ctrlp.vim'
-" Csearch is a fast alternative to grep, but requires pre-indexing.
-Plugin 'brandonbloom/csearch.vim'
-" Ack is a better featured alternative to grep.
-Plugin 'ack.vim'
-" Attempt at multiple cursors like in SublimeText.
-" NOTE: try some alternative, this is fairly limited.
-Plugin 'terryma/vim-multiple-cursors'
-" Code snippets for vim.
-" vim-snipmate has 2 dependencies below:
- Plugin 'MarcWeber/vim-addon-mw-utils'
- Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-" Smart code completion.
-Plugin 'Shougo/neocomplete'
-Plugin 'Shougo/echodoc.vim'
-" Another attempt at code snippets.
-Plugin 'Shougo/neosnippet'
-" Show an outline of current source file in a split.
-Plugin 'majutsushi/tagbar'
-" Simple TODO lists; flaky folding, unfortunately
-" TODO: improve workflowish
-Plugin 'lukaszkorecki/workflowish'
-" Git
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-unimpaired'
-" Python code completion, docs & related
-Plugin 'davidhalter/jedi-vim'
-" List buffers on top as if they were "tabs"
-"Plugin 'fholgado/minibufexpl.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-"alternative: Plugin 'scrooloose/nerdcommenter'
-"alternative: https://github.com/tomtom/tcomment_vim
-Plugin 'godlygeek/tabular'
-Plugin 'Lokaltog/vim-easymotion'
-" Visualize the undo tree
-Plugin 'sjl/gundo.vim'
-" Filesystem explorer
-" Plugin 'scrooloose/nerdtree'
-Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-repeat'
-" Increase/decrease selection with +/_
-Plugin 'terryma/vim-expand-region'
-" Choose window (split) by number
-Plugin 't9md/vim-choosewin'
-Plugin 'AndrewRadev/splitjoin.vim'
-" Auto-reloading of edited plugin files (for plugins development) + 1
-" dependency (vim-misc)
- Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-reload'
-" Highlighting of ANSI escape-coded colours
-Plugin 'powerman/vim-plugin-AnsiEsc'
-"Plugin 'suan/vim-instant-markdown'
-" Personal test plugin
-Plugin '~/.vim/bundle/notepoints/.git'
-" TODO: Plugin 'tpope/vim-sleuth' ?
-" TODO: or: Plugin 'ciaranm/detectindent' ?
-" TODO: Plugin 'scrooloose/syntastic' ?
-" TODO: Plugin 'bling/vim-airline' ?
-" TODO: Plugin 'tpope/vim-obsession' ?
-" TODO: Plugin 'tpope/vim-jdaddy' ?
-" TODO: http://spf13.com/project/spf13-vim/
-" TODO: https://github.com/mbrochh/vim-as-a-python-ide/blob/master/.vimrc
-" TODO: http://vimcasts.org/blog/2014/02/follow-my-leader/
-" TODO: https://github.com/tpope/vim-sensible
-" TODO: http://items.sjbach.com/319/configuring-vim-right
-" TODO: https://github.com/sheerun/dotfiles
-" TODO: https://github.com/fatih/dotfiles/blob/master/vimrc
-" alt.to above: "tabbar.vim" http://www.vim.org/scripts/script.php?script_id=1338
-call vundle#end()            " required
-filetype plugin indent on    " required
-" or, "to ignore plugin indent changes":
-"filetype plugin on
-"PluginInstall
-
 " An example for a vimrc file.
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
