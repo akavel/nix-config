@@ -1,0 +1,14 @@
+diff --git a/src/nvim/tui/input.c b/src/nvim/tui/input.c
+index b41e4d2..875e70a 100644
+--- a/src/nvim/tui/input.c
++++ b/src/nvim/tui/input.c
+@@ -138,6 +138,9 @@ static void forward_modified_utf8(TermInput *input, TermKeyKey *key)
+   if (key->type == TERMKEY_TYPE_KEYSYM
+       && key->code.sym == TERMKEY_SYM_ESCAPE) {
+     len = (size_t)snprintf(buf, sizeof(buf), "<Esc>");
++  } else if (key->type == TERMKEY_TYPE_KEYSYM
++      && key->code.sym == TERMKEY_SYM_SUSPEND) {
++    len = (size_t)snprintf(buf, sizeof(buf), "<C-Z>");
+   } else {
+     len = termkey_strfkey(input->tk, buf, sizeof(buf), key, TERMKEY_FORMAT_VIM);
+   }

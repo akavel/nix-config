@@ -24,20 +24,29 @@
       ];
     };
 
-    # TODO(akavel): as below, or: `neovim = defaultPkgs.neovim.override {` ?
-    # TODO(akavel): vim_configurable? or not needed?
-    # FIXME(akavel): use patched neovim with fixed ctrl-z (neovim/#3100)
     # TODO(akavel): use vim/neovim as default editor for git commit
     # - try to provide a Nix repro (deterministic? via docker?) to neovim maintainers
     # - try to somehow change TERM anyway (?) to fix colors in neovim (e.g. TODO not visible in this file)
-    nvim = pkgs.neovim.override {
-      vimAlias = true;
-      withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
-      withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
-      #withPython3 = true;   # Required for 'deoplete' plugin
-      # TODO(akavel): test: callPackage ./vimrc.nix {};
-      configure = import ./vimrc.nix pkgs;
-    };
+    # NOTE(akavel): we cannot just use `overrideDerivation` on
+    # `pkgs.neovim.override`, because the latter is really a "Russian doll" if
+    # its 'configure' or 'vimAlias' option is non-trivial; we must access the
+    # "pristine neovim", which happens to get returned only when
+    # `vimAlias==false && configure==null`. Only then we can patch it, and then
+    # we have to add a vimrc and 'vim' alias by ourselves (using vimUtils).
+    nvim = let
+      nvim = vimUtils.vimWithRC {
+        vimExecutable = "${nvimPatched}/bin/nvim";
+        vimrcFile = vimUtils.vimrcFile (import ./vimrc.nix pkgs);
+      };
+      # Use patched neovim with fixed ctrl-z (neovim/#3100)
+      nvimPatched = lib.overrideDerivation nvimOverridden (oldAttrs: {
+        patches = [ ./neovim-ctrlz.patch ];
+      });
+      nvimOverridden = defaultPkgs.neovim.override {
+        withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
+        withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
+      };
+      in nvim;
 
     vamos = import ./lib-vamos.nix pkgs;
   };
