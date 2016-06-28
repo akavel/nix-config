@@ -10,11 +10,12 @@ index 5b5c8a2..6ec789a 100644
    time_init();
  
    /* Many variables are in "params" so that we can pass them to invoked
-@@ -274,6 +275,9 @@ int main(int argc, char **argv)
+@@ -274,6 +275,10 @@ int main(int argc, char **argv)
  
    full_screen = true;
    t_colors = 256;
 +  if (term && strcmp(term, "linux")==0) {
++    // TODO: instead, in tui.c if `tput colors`==8 scramble to translate 256->16 colors?
 +    t_colors = 8;
 +  }
    check_tty(&params);
