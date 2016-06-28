@@ -27,6 +27,7 @@
     # TODO(akavel): use vim/neovim as default editor for git commit
     # - try to provide a Nix repro (deterministic? via docker?) to neovim maintainers
     # - try to somehow change TERM anyway (?) to fix colors in neovim (e.g. TODO not visible in this file)
+    #   - see: http://jasonwryan.com/blog/2011/04/06/vim-colours-in-the-console/
     # NOTE(akavel): we cannot just use `overrideDerivation` on
     # `pkgs.neovim.override`, because the latter is really a "Russian doll" if
     # its 'configure' or 'vimAlias' option is non-trivial; we must access the
@@ -35,6 +36,7 @@
     # we have to add a vimrc and 'vim' alias by ourselves (using vimUtils).
     nvim = let
       nvim = vimUtils.vimWithRC {
+        #vimExecutable = "${pkgs.vim}/bin/vim";
         vimExecutable = "${nvimPatched}/bin/nvim";
         vimrcFile = vimUtils.vimrcFile (import ./vimrc.nix pkgs);
       };
