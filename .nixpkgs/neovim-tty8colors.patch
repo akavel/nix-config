@@ -1,16 +1,21 @@
 diff --git a/src/nvim/main.c b/src/nvim/main.c
-index 5b5c8a2..6c4bbab 100644
+index 5b5c8a2..6ec789a 100644
 --- a/src/nvim/main.c
 +++ b/src/nvim/main.c
-@@ -273,7 +273,11 @@ int main(int argc, char **argv)
-     printf(_("%d files to edit\n"), GARGCOUNT);
+@@ -223,6 +223,7 @@ int main(int argc, char **argv)
+   mparm_T params;         // various parameters passed between
+                           // main() and other functions.
+   char_u *cwd = NULL;     // current workding dir on startup
++  char *term = getenv("TERM");
+   time_init();
+ 
+   /* Many variables are in "params" so that we can pass them to invoked
+@@ -274,6 +275,9 @@ int main(int argc, char **argv)
  
    full_screen = true;
--  t_colors = 256;
-+  if (strcmp(getenv("TERM"), "linux") == 0) {
+   t_colors = 256;
++  if (term && strcmp(term, "linux")==0) {
 +    t_colors = 8;
-+  } else {
-+    t_colors = 256;
 +  }
    check_tty(&params);
  

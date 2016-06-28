@@ -35,6 +35,7 @@
     # `vimAlias==false && configure==null`. Only then we can patch it, and then
     # we have to add a vimrc and 'vim' alias by ourselves (using vimUtils).
     nvim = let
+      # TODO(akavel): also link "${nvimPatched}/bin/nvim -R" as "view"
       nvim = vimUtils.vimWithRC {
         #vimExecutable = "${pkgs.vim}/bin/vim";
         vimExecutable = "${nvimPatched}/bin/nvim";
@@ -42,8 +43,7 @@
       };
       # Use patched neovim with fixed ctrl-z (neovim/#3100)
       nvimPatched = lib.overrideDerivation nvimOverridden (oldAttrs: {
-        patches = [ ./neovim-ctrlz.patch ];
-        #patches = [ ./neovim-ctrlz.patch ./neovim-tty8colors.patch ];
+        patches = [ ./neovim-ctrlz.patch ./neovim-tty8colors.patch ];
       });
       nvimOverridden = defaultPkgs.neovim.override {
         withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
