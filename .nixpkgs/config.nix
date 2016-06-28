@@ -26,8 +26,6 @@
 
     # TODO(akavel): use vim/neovim as default editor for git commit
     # - try to provide a Nix repro (deterministic? via docker?) to neovim maintainers
-    # - try to somehow change TERM anyway (?) to fix colors in neovim (e.g. TODO not visible in this file)
-    #   - see: http://jasonwryan.com/blog/2011/04/06/vim-colours-in-the-console/
     # NOTE(akavel): we cannot just use `overrideDerivation` on
     # `pkgs.neovim.override`, because the latter is really a "Russian doll" if
     # its 'configure' or 'vimAlias' option is non-trivial; we must access the
@@ -41,7 +39,8 @@
         vimExecutable = "${nvimPatched}/bin/nvim";
         vimrcFile = vimUtils.vimrcFile (import ./vimrc.nix pkgs);
       };
-      # Use patched neovim with fixed ctrl-z (neovim/#3100)
+      # Use patched neovim with fixed ctrl-z (neovim/#3100) and colors in tty
+      # (virtual consoles)
       nvimPatched = lib.overrideDerivation nvimOverridden (oldAttrs: {
         patches = [ ./neovim-ctrlz.patch ./neovim-tty8colors.patch ];
       });
