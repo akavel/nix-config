@@ -6,14 +6,14 @@
     # after all overrides. And `defaultPkgs` contains packages in "pristine"
     # state (before any of the following overrides were applied).
 
-    # "Declarative user profile/config". Install/update with `nix-env -i all`.
-    # (This is a "fake package" named "all".)
-    # NOTE(akavel): Aparently `nix-env -iA nixos.all` is a faster variant.
-    all = with pkgs; buildEnv {
-      # Make it easy to install with `nix-env -i all` [I believe]
+    # "Declarative user profile/config". Install/update with `nix-env -i home`.
+    # (This is a "fake package" named "home".)
+    # NOTE(akavel): Aparently `nix-env -iA nixos.home` is a faster variant.
+    home = with pkgs; buildEnv {
+      # Make it easy to install with `nix-env -i home` [I believe]
       # TODO(akavel): verify that below line is required [or advised] for
-      # `nix-env -i all`
-      name = "all";
+      # `nix-env -i home`
+      name = "home";
 
       paths = [
         firefox
