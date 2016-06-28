@@ -43,6 +43,7 @@
       # Use patched neovim with fixed ctrl-z (neovim/#3100)
       nvimPatched = lib.overrideDerivation nvimOverridden (oldAttrs: {
         patches = [ ./neovim-ctrlz.patch ];
+        #patches = [ ./neovim-ctrlz.patch ./neovim-tty8colors.patch ];
       });
       nvimOverridden = defaultPkgs.neovim.override {
         withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
