@@ -51,6 +51,8 @@
       in nvim;
 
     vamos = import ./lib-vamos.nix pkgs;
+
+    myHomer = import ./my-homer.nix pkgs;
   };
 
   # TODO(akavel): somehow change $INPUTRC env path and put inside contents of
