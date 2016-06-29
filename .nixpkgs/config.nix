@@ -54,7 +54,13 @@
 
     vamos = callPackage ./lib-vamos.nix {};
 
-    nix-home = callPackage ./nix-home.nix {};
+    nix-home = callPackage ./nix-home.nix {
+      dirs = {
+        "/" = {
+          "fooFile" = "hello world";
+        };
+      };
+    };
   };
 
   # TODO(akavel): somehow change $INPUTRC env path and put inside contents of

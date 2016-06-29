@@ -1,5 +1,9 @@
-{ stdenv, writeText, writeScript
-, bash }:
+{ stdenv, lib, writeText, writeScript
+, bash
+
+, storePath ? "/etc/home"
+, dirs ? {}
+}:
 
 let
   nixHome = stdenv.mkDerivation rec {
@@ -13,9 +17,15 @@ let
   nixHomeScript = writeScript "nix-home" ''
     #! ${bash}/bin/bash
     echo `which nix-env` "$@"
-    # TODO(akavel): pass source path via 'nix-home.nix' derivation args
-    for f in $(find ~/.nix-profile/etc/home 2>/dev/null); do
+
+    # Cleanup old links
+    for d in ${ bashList (builtins.attrNames dirs) }; do
+      echo "$d"
+    done
+
+    for f in $(find "$HOME/.nix-profile/${storePath}" 2>/dev/null); do
       echo "$f"
     done
   '';
+  bashList = list: lib.concatMapStringsSep " " lib.escapeShellArg list;
 in nixHome
