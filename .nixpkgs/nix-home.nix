@@ -1,4 +1,4 @@
-{ stdenv, writeText, writeScript, ... }:
+{ stdenv, writeText, writeScript, bash, ... }:
 
 let
   nixHome = stdenv.mkDerivation rec {
@@ -10,6 +10,7 @@ let
     '';
   };
   nixHomeScript = writeScript "nix-home" ''
+    #! ${bash}/bin/bash
     echo "hello world"
   '';
 in nixHome
