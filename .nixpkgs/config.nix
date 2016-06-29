@@ -21,6 +21,7 @@
         pstree    # print an ascii-art tree of running processes
         nvim      # NeoVim + customized config (see below)
         nix-repl  # REPL for learning Nix
+        nix-home  # $HOME dir management tool wrapping nix-env
       ];
     };
 
@@ -53,7 +54,7 @@
 
     vamos = import ./lib-vamos.nix pkgs;
 
-    myHomer = import ./my-homer.nix pkgs;
+    nix-home = import ./nix-home.nix pkgs;
   };
 
   # TODO(akavel): somehow change $INPUTRC env path and put inside contents of
