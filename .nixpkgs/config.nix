@@ -26,6 +26,7 @@
 
     # TODO(akavel): use vim/neovim as default editor for git commit
     # - try to provide a Nix repro (deterministic? via docker?) to neovim maintainers
+    # TODO(akavel): add vim plugin for nix syntax
     # NOTE(akavel): we cannot just use `overrideDerivation` on
     # `pkgs.neovim.override`, because the latter is really a "Russian doll" if
     # its 'configure' or 'vimAlias' option is non-trivial; we must access the
