@@ -1,6 +1,5 @@
 { stdenv, writeText, writeScript
-, bash
-, ... }:
+, bash }:
 
 let
   nixHome = stdenv.mkDerivation rec {

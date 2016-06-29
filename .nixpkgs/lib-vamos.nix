@@ -1,5 +1,4 @@
-# TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
-{ lib, vimUtils, vimPlugins, fetchFromGitHub, ... }:
+{ lib, vimUtils, vimPlugins, fetchFromGitHub }:
 let
   /* vamos is a helper/wrapper for vim plugin manager named "vam".
      It allows to specify plugins like below:

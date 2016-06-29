@@ -52,9 +52,9 @@
       };
       in nvim;
 
-    vamos = import ./lib-vamos.nix pkgs;
+    vamos = callPackage ./lib-vamos.nix {};
 
-    nix-home = import ./nix-home.nix pkgs;
+    nix-home = callPackage ./nix-home.nix {};
   };
 
   # TODO(akavel): somehow change $INPUTRC env path and put inside contents of
