@@ -1,4 +1,6 @@
-{ stdenv, writeText, writeScript, bash, ... }:
+{ stdenv, writeText, writeScript
+, bash
+, ... }:
 
 let
   nixHome = stdenv.mkDerivation rec {
@@ -11,6 +13,10 @@ let
   };
   nixHomeScript = writeScript "nix-home" ''
     #! ${bash}/bin/bash
-    echo "hello world"
+    echo `which nix-env` "$@"
+    # TODO(akavel): pass source path via 'nix-home.nix' derivation args
+    for f in $(find ~/.nix-profile/etc/home 2>/dev/null); do
+      echo "$f"
+    done
   '';
 in nixHome
