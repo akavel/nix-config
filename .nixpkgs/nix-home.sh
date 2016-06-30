@@ -48,9 +48,10 @@ else
   nix-env "$@"
 fi
 
-# Create links to added files
-comm -z -13 "$oldsrc" <( subtree "$src" ) |
+# Create links in $dst to files in $src
+subtree "$src" |
     while IFS= read -r -d '' path; do
+        [ -e "$dst/$path" ] && continue
         printf "add: %q\n" $path
         mkdir -p "$(dirname "$dst/$path")"
         ln -s -r "$src/$path" "$dst/$path"
