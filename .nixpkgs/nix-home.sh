@@ -27,10 +27,10 @@ function unmkdir {
         path="$(dirname "$path")"
     done
 }
-# subtree prints relative paths of all files in $root tree, separated by NUL byte and sorted
+# subtree prints relative paths of all (links to) files in $root tree, separated by NUL byte and sorted
 function subtree {
     local root="$1"
-    find "$root/" -type f -printf '%P\0' |
+    find "$root/" -xtype f -printf '%P\0' |
         sort -z
 }
 
