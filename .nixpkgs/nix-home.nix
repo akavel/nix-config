@@ -22,14 +22,3 @@ let
     };
   };
 in nixHome
-
-/*
-    builder = writeText "builder.sh" ''
-      source $stdenv/setup
-      install /dev/stdin -D $out/bin/nix-home <<"EOF"
-      #! ${bash}/bin/bash
-      ${nixHomeScript} ${dirsDerivation} ${ bashList (builtins.attrNames dirs) }
-      EOF
-    '';
-    bashList = list: lib.concatMapStringsSep " " lib.escapeShellArg list;
-*/
