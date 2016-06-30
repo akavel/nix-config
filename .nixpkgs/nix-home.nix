@@ -14,7 +14,7 @@ let
     name = "bin/nix-home";
     path = writeScript "nix-home-wrapper" ''
       #! ${bash}/bin/bash
-      ${./nix-home.sh} ~/.nix-profile/${esc storePath} ~ "$@"
+      ${./nix-home.sh} nix-home ~/.nix-profile/${esc storePath} ~ "$@"
     '';
   }]);
   # linksTree is similar to linkFarm, but can create nested links

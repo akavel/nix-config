@@ -3,11 +3,11 @@
 set -e
 set -o pipefail
 
-src="${1:-~/.nix-profile/etc/nix-home}"
-dst="${2:-~}"
-shift 2
+SCRIPT="${1:-nix-home}"
+src="${2:-~/.nix-profile/etc/nix-home}"
+dst="${3:-~}"
+shift 3
 
-SCRIPT="$(basename "$0")"
 function err {
     echo "$SCRIPT: $@" >&2
 }
