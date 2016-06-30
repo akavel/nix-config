@@ -1,8 +1,9 @@
 { stdenv, lib, writeText, writeScript
 , bash
 
-, storePath ? "/etc/home"
-, dirs ? {}
+# TODO(akavel): use mkOption etc.? how?
+, storePath ? "/etc/nix-home"
+, files ? {}
 }:
 
 let
@@ -11,25 +12,28 @@ let
     version = "0.0.1-2016.06.29";
     builder = writeText "builder.sh" ''
       source $stdenv/setup
-      # FIXME(akavel): verify that all files listed in 'dirs' can be created in $HOME/$d/... - i.e. they're missing or are appropriate links
-      install ${nixHomeScript} -D $out/bin/nix-home
+      ${mkStoreFiles}
     '';
   };
-  # FIXME(akavel): create actual files listed in 'dirs'
-  nixHomeScript = writeScript "nix-home" ''
+  mkStoreFiles = writeScript "mkStoreFiles.sh" ''
     #! ${bash}/bin/bash
-    echo `which nix-env` "$@"
-
-    # Cleanup old links
-    for d in ${ bashList (builtins.attrNames dirs) }; do
-      echo "$d"
-      # FIXME(akavel): delete all links in $HOME/$d dir which point to corresponding path in $HOME/.nix-profile/${storePath}
-    done
-
-    # TODO(akavel): try to put the files in /nix/store/.../, not in ~/.nix-profile/...
-    for f in $(find "$HOME/.nix-profile/${storePath}" 2>/dev/null); do
-      echo "$f"
-    done
+    mkdir -p "$out/${storePath}"
+    ${ lib.concatStringsSep "\n" (lib.attrValues (lib.mapAttrs linkStoreFile fileDrvs)) }
   '';
-  bashList = list: lib.concatMapStringsSep " " lib.escapeShellArg list;
+  linkStoreFile = relPath: contentsDrv: ''
+    mkdir -p "$(dirname "$out/${storePath}/${relPath}")"
+    ln -s "${contentsDrv}" "$out/${storePath}/${relPath}"
+  '';
+  fileDrvs = lib.mapAttrs writeText files;
 in nixHome
+
+/*
+    builder = writeText "builder.sh" ''
+      source $stdenv/setup
+      install /dev/stdin -D $out/bin/nix-home <<"EOF"
+      #! ${bash}/bin/bash
+      ${nixHomeScript} ${dirsDerivation} ${ bashList (builtins.attrNames dirs) }
+      EOF
+    '';
+    bashList = list: lib.concatMapStringsSep " " lib.escapeShellArg list;
+*/

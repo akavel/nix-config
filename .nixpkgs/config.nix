@@ -55,10 +55,9 @@
     vamos = callPackage ./lib-vamos.nix {};
 
     nix-home = callPackage ./nix-home.nix {
-      dirs = {
-        "/" = {
-          "fooFile" = "hello world";
-        };
+      files = {
+        "/fooFile" = "hello world";
+        "/sub/barfile" = "hello bar world";
       };
     };
   };
