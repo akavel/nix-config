@@ -31,7 +31,7 @@ function unmkdir {
 # subtree prints relative paths of all (links to) files in $root tree, separated by NUL byte and sorted
 function subtree {
     local root="$1"
-    find "$root/" -xtype f -printf '%P\0' |
+    (find "$root/" -xtype f -printf '%P\0' 2>/dev/null || true) |
         sort -z
 }
 

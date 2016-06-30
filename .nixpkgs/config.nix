@@ -56,8 +56,8 @@
 
     nix-home = callPackage ./nix-home.nix {
       files = {
-        "/fooFile" = "hello world";
-        "/sub/barfile" = "hello bar world";
+        #"/fooFile" = "hello world";
+        #"/sub/barfile" = "hello bar world";
       };
     };
   };
