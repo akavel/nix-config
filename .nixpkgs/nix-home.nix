@@ -11,9 +11,9 @@ let
   nixHome = linksTree "homedir" (lib.attrValues (lib.mapAttrs mkStoreEntry files));
   # linksTree is similar to linkFarm, but can create nested links
   # TODO(akavel): better doc
-  # TODO(akavel): protect against ' and ` in x.name and x.path
   linksTree = name: entries: runCommand name {} ("mkdir -p $out; cd $out;\n" +
-    (lib.concatMapStrings (x: "mkdir -p `dirname './${x.name}'`; ln -s '${x.path}' './${x.name}';\n") entries));
+    (lib.concatMapStrings (x: "mkdir -p `dirname ./${esc x.name}`; ln -s ${esc x.path} ./${esc x.name};\n") entries));
+  esc = s: lib.escapeShellArg (toString s);
   mkStoreEntry = relPath: contents: {
     name = "${storePath}/${relPath}";
     path = writeTextFile {
