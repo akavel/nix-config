@@ -7,8 +7,9 @@ src="${1:-~/.nix-profile/etc/nix-home}"
 dst="${2:-~}"
 shift 2
 
+SCRIPT="$(basename "$0")"
 function err {
-    echo "$(basename "$0"): $@" >&2
+    echo "$SCRIPT: $@" >&2
 }
 function die {
     err "$@"
@@ -16,7 +17,7 @@ function die {
 }
 # tempfile prints path of a newly created temporary file
 function tempfile {
-    mktemp --suffix=".$$.$(basename "$0")"
+    mktemp --suffix=".$$.$SCRIPT"
 }
 # unmkdir removes empty dirs from $root down to $path
 function unmkdir {
@@ -52,14 +53,14 @@ fi
 subtree "$src" |
     while IFS= read -r -d '' path; do
         [ -e "$dst/$path" ] && continue
-        printf "add: %q\n" $path
+        printf "%s: +%q\n" "$SCRIPT" "$path"
         mkdir -p "$(dirname "$dst/$path")"
         ln -s -r "$src/$path" "$dst/$path"
     done
 # Remove links to removed files
 comm -z -23 "$oldsrc" <( subtree "$src" ) |
     while IFS= read -r -d '' path; do
-        printf "remove: %q\n" $path
+        printf "%s: -%q\n" "$SCRIPT" "$path"
         if [ ! -L "$dst/$path" ]; then
             err "$dst/$path: is not a symbolic link, refusing to remove"
             continue
