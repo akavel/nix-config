@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+# TODO(akavel): write usage doc for --help
 set -e
 set -o pipefail
 
 src="${1:-~/.nix-profile/etc/nix-home}"
 dst="${2:-~}"
+shift 2
 
 function err {
     echo "$(basename "$0"): $@" >&2
