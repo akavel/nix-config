@@ -1,4 +1,4 @@
-{ stdenv, lib, writeText, writeScript
+{ stdenv, lib, writeTextFile, runCommand
 , bash
 
 # TODO(akavel): use mkOption etc.? how?
@@ -6,25 +6,21 @@
 , files ? {}
 }:
 
+# TODO(akavel): could we just return a list of writeTextFile derivations?
 let
-  nixHome = stdenv.mkDerivation rec {
-    name = "nix-home-${version}";
-    version = "0.0.1-2016.06.29";
-    builder = writeText "builder.sh" ''
-      source $stdenv/setup
-      ${mkStoreFiles}
-    '';
+  nixHome = linksTree "homedir" (lib.attrValues (lib.mapAttrs mkStoreEntry files));
+  # linksTree is similar to linkFarm, but can create nested links
+  # TODO(akavel): better doc
+  # TODO(akavel): protect against ' and ` in x.name and x.path
+  linksTree = name: entries: runCommand name {} ("mkdir -p $out; cd $out;\n" +
+    (lib.concatMapStrings (x: "mkdir -p `dirname './${x.name}'`; ln -s '${x.path}' './${x.name}';\n") entries));
+  mkStoreEntry = relPath: contents: {
+    name = "${storePath}/${relPath}";
+    path = writeTextFile {
+      name = baseNameOf relPath;
+      text = contents;
+    };
   };
-  mkStoreFiles = writeScript "mkStoreFiles.sh" ''
-    #! ${bash}/bin/bash
-    mkdir -p "$out/${storePath}"
-    ${ lib.concatStringsSep "\n" (lib.attrValues (lib.mapAttrs linkStoreFile fileDrvs)) }
-  '';
-  linkStoreFile = relPath: contentsDrv: ''
-    mkdir -p "$(dirname "$out/${storePath}/${relPath}")"
-    ln -s "${contentsDrv}" "$out/${storePath}/${relPath}"
-  '';
-  fileDrvs = lib.mapAttrs writeText files;
 in nixHome
 
 /*
