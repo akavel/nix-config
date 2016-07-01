@@ -52,7 +52,12 @@ fi
 # Create links in $dst to files in $src
 subtree "$src" |
     while IFS= read -r -d '' path; do
-        [ -e "$dst/$path" ] && continue
+        if [ -L "$dst/$path" ]; then
+          continue
+        elif [ -e "$dst/$path" ]; then
+          err "warning: $dst/$path is a regular file, refusing to override"
+          continue
+        fi
         printf "%s: +%q\n" "$SCRIPT" "$path"
         mkdir -p "$(dirname "$dst/$path")"
         ln -s -r "$src/$path" "$dst/$path"
@@ -62,9 +67,10 @@ comm -z -23 "$oldsrc" <( subtree "$src" ) |
     while IFS= read -r -d '' path; do
         printf "%s: -%q\n" "$SCRIPT" "$path"
         if [ ! -L "$dst/$path" ]; then
-            err "$dst/$path: is not a symbolic link, refusing to remove"
+            err "warning: $dst/$path is not a symbolic link, refusing to remove"
             continue
         fi
+        # FIXME(akavel): only remove if the link points to expected path
         rm "$dst/$path"
         unmkdir "$dst" "$(dirname "$dst/$path")"
     done
