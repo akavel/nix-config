@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # TODO(akavel): write usage doc for --help
+# TODO(akavel): --init  [create sample ~/.nixpkgs/config.nix]
+# TODO(akavel): --purge [delete all recognized links]
 set -e
 set -o pipefail
 
