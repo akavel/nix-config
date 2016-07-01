@@ -34,6 +34,11 @@ function subtree {
     (find "$root/" -xtype f -printf '%P\0' 2>/dev/null || true) |
         sort -z
 }
+function linkrel {
+    # NOTE(akavel): `ln -r` would follow target symlink, we don't want that
+    local relto="$(dirname "$2")"
+    ln -s "$(realpath -s --relative-to="$relto" "$1")" "$2"
+}
 
 # Remember current state of $src in $oldsrc
 # TODO(akavel): maybe try pinning old nix profile instead?
@@ -60,7 +65,7 @@ subtree "$src" |
         fi
         printf "%s: +%q\n" "$SCRIPT" "$path"
         mkdir -p "$(dirname "$dst/$path")"
-        ln -s -r "$src/$path" "$dst/$path"
+        linkrel "$src/$path" "$dst/$path"
     done
 # Remove links to removed files
 comm -z -23 "$oldsrc" <( subtree "$src" ) |
