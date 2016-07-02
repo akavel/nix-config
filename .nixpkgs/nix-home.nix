@@ -24,10 +24,17 @@ let
   esc = s: lib.escapeShellArg (toString s);
   mkStoreEntry = relPath: contents: {
     name = "${storePath}/${relPath}";
-    path = writeTextFile {
-      # Note(akavel): a prefix (e.g. "homefile-") is required, otherwise dotfiles (e.g. .xsession) get disallowed!...
-      name = "homefile-${baseNameOf relPath}";
-      text = contents;
-    };
+    path =
+      if builtins.isString contents then
+        writeTextFile {
+          # Note(akavel): a prefix (e.g. "homefile-") is required, otherwise dotfiles (e.g. .xsession) get disallowed!...
+          name = "homefile-${baseNameOf relPath}";
+          text = contents;
+        }
+      else if lib.isDerivation contents then
+        contents
+      else
+        # TODO(akavel): if toString possible on 'contents', add it to the thrown message
+        throw "nix-home file value should be string or derivation";
   };
 in nixHome
