@@ -26,7 +26,7 @@ function unmkdir {
     local root="$1"
     local path="$2"
     while [ ${#path} -gt ${#root} ]; do
-        rmdir "$path" || return
+        rmdir "$path" >&/dev/null || return
         path="$(dirname "$path")"
     done
 }
