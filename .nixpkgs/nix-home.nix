@@ -25,7 +25,8 @@ let
   mkStoreEntry = relPath: contents: {
     name = "${storePath}/${relPath}";
     path = writeTextFile {
-      name = baseNameOf relPath;
+      # Note(akavel): a prefix (e.g. "homefile-") is required, otherwise dotfiles (e.g. .xsession) get disallowed!...
+      name = "homefile-${baseNameOf relPath}";
       text = contents;
     };
   };
