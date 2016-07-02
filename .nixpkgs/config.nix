@@ -56,7 +56,7 @@
 
     nix-home = callPackage ./nix-home.nix {
       files = {
-        ".xsession" = "exec awesome";
+        ".xsession" = writeScript "my-.xession" "exec awesome";
         #"/fooFile" = "hello world";
         #"/sub/barfile" = "hello bar world";
       };
