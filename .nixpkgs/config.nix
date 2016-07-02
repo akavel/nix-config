@@ -62,6 +62,9 @@
         #  * ~/.bashrc -- interactive, but non-login shell [notably in SSH sessions, and I think in XWindows sessions?]
         #  * ($BASH_ENV -- non-interactive shell)
         ".bash_profile" = "[ -e ~/.bashrc ] && source ~/.bashrc";
+        ".bashrc" = ''
+          export EDITOR=vim
+        '';
       };
     };
   };
