@@ -57,6 +57,10 @@
     nix-home = callPackage ./nix-home.nix {
       files = {
         #".xsession" = writeScript "my-.xession" "exec awesome";
+        # NOTE: bash reads the following config files in following cases (according to `man bash`):
+        #  * ~/.bash_profile or ~/.bash_login or ~/.profile -- when run as a login shell (implied interactive)
+        #  * ~/.bashrc -- interactive, but non-login shell [notably in SSH sessions, and I think in XWindows sessions?]
+        #  * ($BASH_ENV -- non-interactive shell)
       };
     };
   };
