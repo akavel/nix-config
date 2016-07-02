@@ -61,6 +61,7 @@
         #  * ~/.bash_profile or ~/.bash_login or ~/.profile -- when run as a login shell (implied interactive)
         #  * ~/.bashrc -- interactive, but non-login shell [notably in SSH sessions, and I think in XWindows sessions?]
         #  * ($BASH_ENV -- non-interactive shell)
+        ".bash_profile" = "[ -e ~/.bashrc ] && source ~/.bashrc";
       };
     };
   };
