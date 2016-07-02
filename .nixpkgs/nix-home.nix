@@ -35,6 +35,6 @@ let
         contents
       else
         # TODO(akavel): if toString possible on 'contents', add it to the thrown message
-        throw "nix-home file value should be string or derivation";
+        throw "nix-home file value should be string or derivation, got ${builtins.typeOf contents}";
   };
 in nixHome
