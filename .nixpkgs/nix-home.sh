@@ -7,6 +7,7 @@ set -o pipefail
 
 SCRIPT="$(basename "$0")"
 src=@contents@
+src="$(realpath -s "$src")"
 dst=@links@
 
 function err {
@@ -48,8 +49,6 @@ oldsrc="$( tempfile )"
 trap "rm '$oldsrc'" EXIT
 subtree "$src" > "$oldsrc"
 
-# TODO(akavel): For safety, verify $dst paths to be potentially removed are all correct links
-
 if [ $# -eq 0 ]; then
   nix-env -iA nixpkgs.home
 else
@@ -74,10 +73,14 @@ comm -z -23 "$oldsrc" <( subtree "$src" ) |
     while IFS= read -r -d '' path; do
         printf "%s: -%q\n" "$SCRIPT" "$path"
         if [ ! -L "$dst/$path" ]; then
-            err "warning: $dst/$path is not a symbolic link, refusing to remove"
+            err "warning: refusing to remove $dst/$path: it's not a symbolic link"
             continue
         fi
-        # FIXME(akavel): only remove if the link points to expected path
+        linkTarget="$(realpath -s "$(readlink "$dst/$path")")"
+        if [[ "$linkTarget" != "$src/"* ]]; then
+            err "warning: refusing to remove $dst/$path: link doesn't point into $src: $linkTarget"
+            continue
+        fi
         rm "$dst/$path"
         unmkdir "$dst" "$(dirname "$dst/$path")"
     done
