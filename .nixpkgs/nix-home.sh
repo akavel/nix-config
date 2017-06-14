@@ -17,11 +17,11 @@ function die {
     err "$@"
     exit 1
 }
-# tempfile prints path of a newly created temporary file
+# tempfile  # print path of a newly created temporary file
 function tempfile {
     mktemp --suffix=".$$.$SCRIPT"
 }
-# unmkdir removes empty dirs from $root down to $path
+# unmkdir root path  # remove empty dirs from $root down to $path
 function unmkdir {
     local root="$1"
     local path="$2"
@@ -30,12 +30,13 @@ function unmkdir {
         path="$(dirname "$path")"
     done
 }
-# subtree prints relative paths of all (links to) files in $root tree, separated by NUL byte and sorted
+# subtree root  # print relative paths of all (links to) files in $root tree, separated by NUL byte and sorted
 function subtree {
     local root="$1"
     (find "$root/" -xtype f -printf '%P\0' 2>/dev/null || true) |
         sort -z
 }
+# linkrel src dst  # create relative symbolic link at $dst pointing to $src
 function linkrel {
     # NOTE(akavel): `ln -r` would follow target symlink, we don't want that
     local relto="$(dirname "$2")"
