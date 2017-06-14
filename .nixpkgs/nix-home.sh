@@ -5,10 +5,9 @@
 set -e
 set -o pipefail
 
-SCRIPT="${1:-nix-home}"
-src="${2:-~/.nix-profile/etc/nix-home}"
-dst="${3:-~}"
-shift 3
+SCRIPT="$(basename "$0")"
+src=@contents@
+dst=@links@
 
 function err {
     echo "$SCRIPT: $@" >&2
@@ -52,7 +51,7 @@ subtree "$src" > "$oldsrc"
 # TODO(akavel): For safety, verify $dst paths to be potentially removed are all correct links
 
 if [ $# -eq 0 ]; then
-  nix-env -iA nixos.home
+  nix-env -iA nixpkgs.home
 else
   nix-env "$@"
 fi
