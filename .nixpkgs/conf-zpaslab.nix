@@ -11,9 +11,11 @@
 
     nix-home = callPackage ./nix-home.nix {
       files = {
-        # case-insensitive TAB-completion in bash
+        # bash: case-insensitive TAB-completion
         ".inputrc" = "set completion-ignore-case On";
         "sample-home-test" = "sample-test";
+        # ack: nice navigation if many results; keep colors enabled
+        ".ackrc" = "--pager=less -R";
       };
     };
   };
