@@ -6,6 +6,8 @@
 }:
 
 # TODO(akavel): could we just return a list of writeTextFile derivations?
+# TODO(akavel): doc
+# TODO(akavel): instead of map {path -> contents}, allow structure similar as for NixOS's "etc", i.e. nested tree of maps.
 let
   STORE_PATH = "/var/nix-home";
   nixHome = linksTree "homedir" (lib.attrValues (lib.mapAttrs mkStoreEntry files) ++ [{
@@ -22,8 +24,14 @@ let
   };
   # linksTree is similar to linkFarm, but can create nested links
   # TODO(akavel): better doc
-  linksTree = name: entries: runCommand name {} ("mkdir -p $out; cd $out;\n" +
-    (lib.concatMapStrings (x: "mkdir -p `dirname ./${esc x.name}`; ln -s ${esc x.path} ./${esc x.name};\n") entries));
+  linksTree = name: entries:
+    runCommand name {} ''
+      mkdir -p $out
+      cd $out
+      ${lib.concatMapStrings (x:
+          "mkdir -p `dirname ./${esc x.name}`; ln -s ${esc x.path} ./${esc x.name};\n")
+        entries}
+      '';
   esc = s: lib.escapeShellArg (toString s);
   mkStoreEntry = relPath: contents: {
     name = "${STORE_PATH}/${relPath}";
