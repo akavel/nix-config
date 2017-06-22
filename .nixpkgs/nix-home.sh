@@ -2,6 +2,7 @@
 # TODO(akavel): write usage doc for --help
 # TODO(akavel): --init  [create sample ~/.nixpkgs/config.nix]
 # TODO(akavel): --purge [delete all recognized links]
+# TODO(akavel): add option for writing into different dir (for testing generated output)
 set -e
 set -o pipefail
 
