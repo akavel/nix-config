@@ -21,6 +21,8 @@
           [user]
             name = "Mateusz Czapliński"
             email = czapkofan@gmail.com
+          [push]
+            default = simple
         '';
       };
     };
