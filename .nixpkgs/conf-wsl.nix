@@ -16,6 +16,12 @@
         #"sample-home-test" = "sample-test";
         # ack: nice navigation if many results; keep colors enabled
         ".ackrc" = "--pager=less -R";
+        ".gitconfig" = ''
+          # This is Git's per-user configuration file.
+          [user]
+            name = "Mateusz Czapliński"
+            email = czapkofan@gmail.com
+        '';
       };
     };
   };
