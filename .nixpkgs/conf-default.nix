@@ -52,7 +52,7 @@
       };
       in nvim;
 
-    vamos = callPackage ./lib-vamos.nix {};
+    vamos = callPackage ./vim/lib-vamos.nix {};
 
     nix-home = callPackage ./nix-home {
       files = {

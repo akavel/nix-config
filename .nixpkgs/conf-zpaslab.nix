@@ -40,7 +40,7 @@
           vimrcConfig = myVimrc;
         };
         # Vamos is my custom helper for managing Vim plugins & .vimrc
-        vamos = callPackage ./lib-vamos.nix {};
+        vamos = callPackage ./vim/lib-vamos.nix {};
         # Note: see <nixpkgs>/pkgs/misc/vim-plugins/default.nix for names to use with fromVam
         myVimrc = vamos [
           { fromGitHub="garyburd/go-explorer";
