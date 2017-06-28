@@ -31,10 +31,16 @@
     # TODO(akavel): disable python in vim, maybe
     xim =
       let
-        theXim = vimUtils.vimWithRC {
+        theXim = vimRebuilt;
+        # Vim in Nix uses some ancient customization methods, which result in super ugly
+        # customization usage.
+        # See also: https://beyermatthias.de/blog/2015/11/25/how-to-setup-neovim-on-nixos/
+        vimRebuilt = lib.overrideDerivation vimConfigured (o: {
+          luaSupport = true;
+        });
+        vimConfigured = defaultPkgs.vim_configurable.customize {
           name = "xim";
-          vimExecutable = "${defaultPkgs.vim}/bin/vim";
-          vimrcFile = vimUtils.vimrcFile myVimrc;
+          vimrcConfig = myVimrc;
         };
         # Vamos is my custom helper for managing Vim plugins & .vimrc
         vamos = callPackage ./lib-vamos.nix {};
