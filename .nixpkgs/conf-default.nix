@@ -54,7 +54,7 @@
 
     vamos = callPackage ./lib-vamos.nix {};
 
-    nix-home = callPackage ./nix-home.nix {
+    nix-home = callPackage ./nix-home {
       files = {
         #".xsession" = writeScript "my-.xession" "exec awesome";
         # For initial learning, copy default config for "awesome" window-manager

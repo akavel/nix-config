@@ -9,7 +9,7 @@
       ];
     };
 
-    nix-home = callPackage ./nix-home.nix {
+    nix-home = callPackage ./nix-home {
       files = {
         # bash: case-insensitive TAB-completion
         ".inputrc" = "set completion-ignore-case On";
