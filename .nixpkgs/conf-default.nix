@@ -39,7 +39,7 @@
       nvim = vimUtils.vimWithRC {
         #vimExecutable = "${pkgs.vim}/bin/vim";
         vimExecutable = "${nvimPatched}/bin/nvim";
-        vimrcFile = vimUtils.vimrcFile (import ./vimrc.nix pkgs);
+        vimrcFile = vimUtils.vimrcFile (import ./vim/vimrc-old.nix pkgs);
       };
       # Use patched neovim with fixed ctrl-z (neovim/#3100) and colors in tty
       # (virtual consoles)
