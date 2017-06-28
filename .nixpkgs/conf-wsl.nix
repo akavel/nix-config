@@ -6,6 +6,7 @@
       name = "home";
       paths = [
         nix-home
+        vim_
       ];
     };
 
@@ -26,6 +27,32 @@
         '';
       };
     };
+
+    # TODO(akavel): disable python in vim, maybe
+    # TODO(akavel): use neovim instead of vim
+    # IMPORTANT: bash will by default use cached /usr/bin/vim; to clear
+    # cache, run `hash -r` or `hash -d vim` - see:
+    # https://unix.stackexchange.com/a/5610/11352
+    vim_ =
+      let
+        theVim = vimConfigured;
+        # Vim in Nix uses some ancient customization methods, which result in
+        # super ugly customization usage. I can't figure out e.g. how to
+        # disable support for Python, but keep Lua enabled.
+        vimConfigured = defaultPkgs.vim_configurable.customize {
+          name = "vim";
+          vimrcConfig = myVimrc;
+        };
+        # Vamos is my custom helper for managing Vim plugins & .vimrc
+        vamos = callPackage ./lib-vamos.nix {};
+        # Note: see <nixpkgs>/pkgs/misc/vim-plugins/default.nix for names to use with fromVam
+        myVimrc = vamos [
+          # Settings specific to WSL
+          { config = ''
+              colo elflord
+            ''; }
+        ];
+      in theVim;
   };
 }
 
