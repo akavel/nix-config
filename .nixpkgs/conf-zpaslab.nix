@@ -31,13 +31,10 @@
     # TODO(akavel): disable python in vim, maybe
     xim =
       let
-        theXim = vimRebuilt;
-        # Vim in Nix uses some ancient customization methods, which result in super ugly
-        # customization usage.
-        # See also: https://beyermatthias.de/blog/2015/11/25/how-to-setup-neovim-on-nixos/
-        vimRebuilt = lib.overrideDerivation vimConfigured (o: {
-          luaSupport = true;
-        });
+        theXim = vimConfigured;
+        # Vim in Nix uses some ancient customization methods, which result in
+        # super ugly customization usage. I can't figure out e.g. how to
+        # disable support for Python, but keep Lua enabled.
         vimConfigured = defaultPkgs.vim_configurable.customize {
           name = "xim";
           vimrcConfig = myVimrc;
