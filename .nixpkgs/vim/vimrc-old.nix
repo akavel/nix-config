@@ -1,5 +1,3 @@
-# TODO(akavel): try to remove ..., unless it's ok and not impacting performance/materializations
-{ vamos, ... }:
 /*
 " Simple TODO lists; flaky folding, unfortunately
 " TODO: improve workflowish
@@ -37,33 +35,14 @@ Plugin '~/.vim/bundle/notepoints/.git'
 " TODO: https://github.com/fatih/dotfiles/blob/master/vimrc
 " alt.to above: "tabbar.vim" http://www.vim.org/scripts/script.php?script_id=1338
 */
-# TODO(akavel): refactor vamos to make its code more readable
-vamos [
-
-  { fromGitHub="garyburd/go-explorer"; rev="6a82202d18e3b4a4a06b6c22769ee9511335e6ae"; sha256="1padb45fhnqxwazgmlx237c247c2naj4cfl2x28y9w7kavsqnmi5"; }
-
-  # Go language support for vim
-  { fromVam="vim-go"; }
-
-  # Smart and quick file opening with Ctrl-P, by fuzzy path match, like in SublimeText
-  { fromVam="ctrlp"; config=''
-      let g:ctrlp_extensions = ['mixed', 'line', 'buffertag', 'tag']
-      let g:ctrlp_custom_ignore = '\v\.pyc''$'
-    ''; }
+[
 
   # Csearch is a fast alternative to grep, but requires pre-indexing.
   # TODO(akavel): Plugin 'brandonbloom/csearch.vim'
 
-  # Ack is a better featured alternative to grep.
-  # TODO(akavel): Plugin 'ack.vim'
-
   # Attempt at multiple cursors like in SublimeText.
   # NOTE: try some alternative, this is fairly limited.
   # TODO(akavel): Plugin 'terryma/vim-multiple-cursors'
-
-  # Code snippets for vim.
-  # TODO(akavel): how to configure snippets in a file in Nix store?
-  { fromVam="snipmate"; }
 
   # Smart code completion.
   # TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use neocomplete
@@ -89,10 +68,6 @@ vamos [
       set cmdheight=2
     ''; }
 
-  # Another attempt at code snippets.
-  # TODO(akavel): this or snipmate?
-  { fromVam="neosnippet"; }
-
   # Show an outline of current source file in a split.
   # TODO(akavel): tagbar requires 'exuberant ctags'
   # TODO(akavel): Plugin 'majutsushi/tagbar'
@@ -104,14 +79,9 @@ vamos [
   # " auto-open TagBar. (See :help tagbar for alternatives.)
   # "autocmd VimEnter * nested :TagbarOpen
 
-  # Git
-  { fromVam="fugitive"; }
-
   { fromVam="surround"; }
 
   { fromVam="commentary"; }
-
-  { fromVam="supertab"; }
 
   { fromGitHub="tpope/vim-repeat"; rev="7a6675f092842c8f81e71d5345bd7cdbf3759415"; sha256="0p8g5y3vyl1765lj1r8jpc06l465f9bagivq6k8ndajbg049brl7"; }
 

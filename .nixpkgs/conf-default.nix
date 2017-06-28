@@ -50,9 +50,12 @@
         withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
         withPython3 = false;  # I think I don't need it for now; [NOTE: rebuilds]
       };
+      # TODO(akavel): refactor vamos to make its code more readable
+      vamos = callPackage ./vim/lib-vamos.nix {};
+      commonVimrc = import ./vim/vimrc-common.nix;
+      myVimrc = import ./vim/vimrc-old.nix;
       in nvim;
 
-    vamos = callPackage ./vim/lib-vamos.nix {};
 
     nix-home = callPackage ./nix-home {
       files = {

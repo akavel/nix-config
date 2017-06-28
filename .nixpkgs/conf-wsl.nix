@@ -41,12 +41,13 @@
         # disable support for Python, but keep Lua enabled.
         vimConfigured = defaultPkgs.vim_configurable.customize {
           name = "vim";
-          vimrcConfig = myVimrc;
+          vimrcConfig = vamos (commonVimrc ++ myVimrc);
         };
         # Vamos is my custom helper for managing Vim plugins & .vimrc
         vamos = callPackage ./vim/lib-vamos.nix {};
+        commonVimrc = import ./vim/vimrc-common.nix;
         # Note: see <nixpkgs>/pkgs/misc/vim-plugins/default.nix for names to use with fromVam
-        myVimrc = vamos [
+        myVimrc = [
           # Settings specific to WSL
           { config = ''
               colo elflord
