@@ -44,7 +44,7 @@
       # Use patched neovim with fixed ctrl-z (neovim/#3100) and colors in tty
       # (virtual consoles)
       nvimPatched = lib.overrideDerivation nvimOverridden (oldAttrs: {
-        patches = [ ./neovim-ctrlz.patch ./neovim-tty8colors.patch ];
+        patches = [ ./vim/neovim-ctrlz.patch ./vim/neovim-tty8colors.patch ];
       });
       nvimOverridden = defaultPkgs.neovim.override {
         withPython  = false;  # I think I don't need it for now; [NOTE: rebuilds]
