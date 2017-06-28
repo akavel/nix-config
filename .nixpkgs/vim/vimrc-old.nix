@@ -62,81 +62,19 @@ set titlestring=%{hostname()}::\ \ %t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%
 let &titleold=hostname()
 set title               " show file in titlebar
 
-" Show tabs and trailing whitespace visually
-set list
-set listchars=
-set listchars+=tab:¸·
-set listchars+=trail:×
-" helpful options for :set nowrap
-set listchars+=precedes:«
-set listchars+=extends:»
-set sidescroll=5
-
-" In command-line, use similar navigation keys like in bash/readline
-" http://stackoverflow.com/a/6923282/98528
-" Note: <C-f> switches to "full editing" of commandline, <C-c> back
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <C-p> <Up>
-cnoremap <C-n> <Down>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-cnoremap <M-b> <S-Left>
-cnoremap <M-f> <S-Right>
-
-" Enable code folding in Go (and others)
-" http://0value.com/my-Go-centric-Vim-setup
-" Note:
-" zM - close all
-" zR - open all
-" zc - close current fold
-" zo - open current fold
-set foldmethod=syntax
-"set foldmethod=indent
-set foldnestmax=10
-set nofoldenable
-set foldlevel=10
-
-" Neosnippet
-let g:neosnippet#disable_runtime_snippets = {'_': 1}
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory = '~/.vim/snippets'
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
 " modeline: allows settings tweaking per edited file, by special magic comment
 " starting with 'vim:'
 set modeline
 
-" Extending the % ("go to pair") key
-runtime macros/matchit.vim
-
-" when splitting window (with C-W,v or C-W,s), open to right/bottom
-set splitright
-set splitbelow
-
-" This trigger takes advantage of the fact that the quickfix window can be
-" easily distinguished by its file-type, qf. The wincmd J command is
-" equivalent to the Ctrl+W, Shift+J shortcut telling Vim to move a window to
-" the very bottom (see :help :wincmd and :help ^WJ).
-autocmd FileType qf wincmd J
-
 " Replace the current buffer with the given new file. That means a new file
 " will be open in a buffer while the old one will be deleted
 com! -nargs=1 -complete=file Breplace edit <args>| bdelete #
-
-" *.md is for Markdown, not Modula (sorry!)
-" http://stackoverflow.com/a/14779012/98528 etc.
-au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
 " Deoplete (auto-completion)
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_ignore_case = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_auto_select = 1
-
-set grepprg=git\ grep\ -n
  ''; }
 ]
 
@@ -159,46 +97,6 @@ endif
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-" if has('mouse')
-"   set mouse=a
-" endif
-" Nope, I don't want clicking the mouse to enter visual mode:
-set mouse-=a
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
-" autoindent etc
-set cindent
-set smartindent
-set autoindent
-set expandtab
-set tabstop=4
-set shiftwidth=4
-
-if &diff
-  " options for vimdiff
-  " with syntax highlighting, colors are often unreadable in vimdiff
-  syntax off
-  " ignore whitespace
-  set diffopt+=iwhite
-else
-  " options for regular vim, non-vimdiff
-  syntax on
-endif
 
 "" <Space> will allow to insert single character
 "function! RepeatChar(char, count)
@@ -227,16 +125,6 @@ endif
 ""endif
 "let &t_Co=256
 
-" bash-like (or, readline-like) tab completion of paths, case insensitive
-set wildmode=longest,list,full
-set wildmenu
-if exists("&wildignorecase")
-  set wildignorecase
-endif
-
-" disable ZZ (like :wq) to avoid it when doing zz with caps-lock on
-nnoremap ZZ <Nop>
-
 " paste mode toggle (needed when using autoindent/smartindent)
 map <F10> :set paste<CR>
 map <F11> :set nopaste<CR>
@@ -244,24 +132,10 @@ imap <F10> <C-O>:set paste<CR>
 imap <F11> <nop>
 set pastetoggle=<F11>
 
-" folding: create foldpoints, but unfold by default
-set foldlevel=99
-augroup vimrc
-  " from: http://vim.wikia.com/wiki/Folding
-  " create folds based on indent...
-  au BufReadPre * setlocal foldmethod=indent
-  " ...but allow manual folds too
-  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-augroup END
-
 "" a.vim: alternate between .h and .C with ':A'
 "source ~/.vim/autoload/a.vim
 "let g:alternateExtensions_C = "h"
 "let g:alternateExtensions_h = "C"
-
-" double backspace -> wrap all windows
-"nmap <BS>     :set wrap!<CR>
-nmap <BS><BS> :windo set wrap!<CR>
 
 "execute pathogen#infect()
 
@@ -398,11 +272,6 @@ let mapleader = "\<Space>"
 " or? let mapleader = " "
 " is below needed?
 nnoremap <Space> <nop>
-
-" vim-choosewin
-nmap - <Plug>(choosewin)
-" let g:choosewin_overlay_enable = 1
-let g:choosewin_overlay_enable = 0
 
 " Helper for loading Go language panics and data race reports into quickfix window
 " set errorformat+=%A%>%m:,%Z\\\ \\\ \\\ \\\ \\\ %f:%l\\\ +%.%#,%+C\\\ \\\ %m,%A\\\ \\\ %m

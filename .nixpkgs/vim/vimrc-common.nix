@@ -110,11 +110,51 @@
       " so that you can undo CTRL-U after inserting a line break.
       inoremap <C-U> <C-G>u<C-U>
 
+      " This trigger takes advantage of the fact that the quickfix window can be
+      " easily distinguished by its file-type, qf. The wincmd J command is
+      " equivalent to the Ctrl+W, Shift+J shortcut telling Vim to move a window to
+      " the very bottom (see :help :wincmd and :help ^WJ).
+      autocmd FileType qf wincmd J
+
     ''; }
   # Some more settings, those I'm pretty sure are mine, or at least I tweaked them
   { config = ''
       set encoding=utf-8
       set fileencoding=utf-8
 
+      " bash-like (or, readline-like) tab completion of paths, case insensitive
+      set wildmode=longest,list,full
+      set wildmenu
+      if exists("&wildignorecase")
+        set wildignorecase
+      endif
+
+      " Show tabs and trailing whitespace visually
+      set list
+      set listchars=
+      set listchars+=tab:¸·
+      set listchars+=trail:×
+      " helpful options for :set nowrap
+      set listchars+=precedes:«
+      set listchars+=extends:»
+      set sidescroll=5
+
+      " In command-line, use similar navigation keys like in bash/readline
+      " http://stackoverflow.com/a/6923282/98528
+      " Note: <C-f> switches to "full editing" of commandline, <C-c> back
+      cnoremap <C-a> <Home>
+      cnoremap <C-e> <End>
+      cnoremap <C-p> <Up>
+      cnoremap <C-n> <Down>
+      cnoremap <C-b> <Left>
+      cnoremap <C-f> <Right>
+      cnoremap <M-b> <S-Left>
+      cnoremap <M-f> <S-Right>
+
+      " Set 'git grep' as default command for :grep
+      " This is much faster and more featureful when available. And I'm using it
+      " mostly only when it's indeed available. If I were to use normal grep, I'd
+      " anyway by default go for :cex system('grep ...')
+      set grepprg=git\ grep\ -n
     ''; }
 ]
