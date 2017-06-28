@@ -52,15 +52,12 @@ Plugin '~/.vim/bundle/notepoints/.git'
 
   # Other .vimrc settings, not plugin-related
   { config = ''
-
 " indentation settings
 set expandtab           " replace TABs with spaces
 set autoindent
 
 " display more info on status line
 set showmode            " show mode in status bar (insert/replace/...)
-set showcmd             " show typed command in status bar
-set ruler               " show cursor position in status bar
 set titlestring=%{hostname()}::\ \ %t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ \-\ VIM
 let &titleold=hostname()
 set title               " show file in titlebar
@@ -160,30 +157,6 @@ if v:progname =~? "evim"
   finish
 endif
 
-" Use Vim settings, rather than Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file (restore to previous version)
-  set undofile		" keep an undo file (undo changes after closing)
-  " don't litter current dir with backups, but still try to put them
-  " somewhere; double slash // at the end stores filenames with path
-  set backupdir-=.
-  set backupdir^=~/tmp//,/tmp//
-  set undodir-=.
-  set undodir^=~/tmp//,/tmp//
-endif
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
-
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
 
@@ -208,48 +181,6 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-
-  augroup END
-
-else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
-endif
-
 " autoindent etc
 set cindent
 set smartindent
@@ -268,10 +199,6 @@ else
   " options for regular vim, non-vimdiff
   syntax on
 endif
-
-" searching: highlight, incremental
-set hlsearch
-set incsearch
 
 "" <Space> will allow to insert single character
 "function! RepeatChar(char, count)
@@ -316,19 +243,6 @@ map <F11> :set nopaste<CR>
 imap <F10> <C-O>:set paste<CR>
 imap <F11> <nop>
 set pastetoggle=<F11>
-
-" display more info on status line
-set showmode            " show mode in status bar (insert/replace/...)
-set showcmd             " show typed command in status bar
-set ruler               " show cursor position in status bar
-set titlestring=%{hostname()}::\ \ %t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ \-\ VIM
-let &titleold=hostname()
-set title               " show file in titlebar
-if &term == "screen"    " for tmux, http://superuser.com/a/279214/12184
-  set t_ts=ESCk
-  set t_fs=ESC\
-  set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)
-endif
 
 " folding: create foldpoints, but unfold by default
 set foldlevel=99

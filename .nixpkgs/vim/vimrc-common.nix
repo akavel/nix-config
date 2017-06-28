@@ -69,4 +69,52 @@
   { fromGitHub="xolox/vim-reload";
     rev = "0a601a668727f5b675cb1ddc19f6861f3f7ab9e1";
     sha256 = "0vb832l9yxj919f5hfg6qj6bn9ni57gnjd3bj7zpq7d4iv2s4wdh"; }
+  # Other .vimrc settings, not plugin-related
+  # Some of them copied from some basic .vimrc (?)
+  { config = ''
+      " Use Vim settings, rather than Vi settings (much better!).
+      " This must be first, because it changes other options as a side effect.
+      set nocompatible
+
+      " allow backspacing over everything in insert mode
+      set backspace=indent,eol,start
+
+      set history=50          " keep 50 lines of command line history
+
+      " searching: highlight, incremental
+      set hlsearch
+      set incsearch
+
+      " display more info on status line
+      set ruler               " show cursor position in status bar
+      set showcmd             " show typed command in status bar
+
+      " some undo/backup settings
+      if has("vms")
+        set nobackup    " do not keep a backup file, use versions instead
+      else
+        set backup      " keep a backup file (restore to previous version)
+        set undofile    " keep an undo file (undo changes after closing)
+        " don't litter current dir with backups, but still try to put them
+        " somewhere; double slash // at the end stores filenames with path
+        set backupdir-=.
+        set backupdir^=~/tmp//,/tmp//
+        set undodir-=.
+        set undodir^=~/tmp//,/tmp//
+      endif
+
+      " Don't use Ex mode, use Q for formatting
+      map Q gq
+
+      " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+      " so that you can undo CTRL-U after inserting a line break.
+      inoremap <C-U> <C-G>u<C-U>
+
+    ''; }
+  # Some more settings, those I'm pretty sure are mine, or at least I tweaked them
+  { config = ''
+      set encoding=utf-8
+      set fileencoding=utf-8
+
+    ''; }
 ]
