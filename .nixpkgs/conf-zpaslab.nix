@@ -36,7 +36,9 @@
           vimExecutable = "${defaultPkgs.vim}/bin/vim";
           vimrcFile = vimUtils.vimrcFile myVimrc;
         };
+        # Vamos is my custom helper for managing Vim plugins & .vimrc
         vamos = callPackage ./lib-vamos.nix {};
+        # Note: see <nixpkgs>/pkgs/misc/vim-plugins/default.nix for names to use with fromVam
         myVimrc = vamos [
           # Go language support for vim
           { fromVam="vim-go"; }
