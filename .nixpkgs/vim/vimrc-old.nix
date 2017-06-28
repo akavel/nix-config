@@ -2,7 +2,6 @@
 " Simple TODO lists; flaky folding, unfortunately
 " TODO: improve workflowish
 Plugin 'lukaszkorecki/workflowish'
-Plugin 'tpope/vim-unimpaired'
 " Python code completion, docs & related
 Plugin 'davidhalter/jedi-vim'
 " List buffers on top as if they were "tabs"
@@ -40,34 +39,6 @@ Plugin '~/.vim/bundle/notepoints/.git'
   # Csearch is a fast alternative to grep, but requires pre-indexing.
   # TODO(akavel): Plugin 'brandonbloom/csearch.vim'
 
-  # Attempt at multiple cursors like in SublimeText.
-  # NOTE: try some alternative, this is fairly limited.
-  # TODO(akavel): Plugin 'terryma/vim-multiple-cursors'
-
-  # Smart code completion.
-  # TODO(akavel): enable 'deoplete' only for NeoVim; for normal Vim use neocomplete
-  # TODO(akavel): Plugin 'Shougo/neocomplete'
-  #{ fromVam="neocomplete"; config=''
-  #    "let g:neocomplete#data_directory = "~/.vim/tmp/swap"
-  #    let g:neocomplete#data_directory = "/tmp/neocomplete-swap"
-  #    " Use neocomplete.
-  #    let g:neocomplete#enable_at_startup = 1
-  #    " Enable heavy omni completion.
-  #    if !exists('g:neocomplete#sources#omni#input_patterns')
-  #        let g:neocomplete#sources#omni#input_patterns = {}
-  #    endif
-  #    " golang fix
-  #    let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
-  #    let g:neocomplete#enable_ignore_case = 1
-  #    let g:neocomplete#enable_smart_case = 1
-  #    let g:neocomplete#enable_auto_select = 1
-  #  ''; }
-
-  { fromGitHub="Shougo/echodoc.vim"; rev="5b883e6f36db14f2396be0e949f1cd44929149eb"; sha256="1m1rl5px9jd94b7ykf4qxcmznaaasrj3x9mraj0yqxjb3rnml1bd"; config=''
-      let g:echodoc_enable_at_startup = 1
-      set cmdheight=2
-    ''; }
-
   # Show an outline of current source file in a split.
   # TODO(akavel): tagbar requires 'exuberant ctags'
   # TODO(akavel): Plugin 'majutsushi/tagbar'
@@ -78,28 +49,6 @@ Plugin '~/.vim/bundle/notepoints/.git'
   # let g:tagbar_show_linenumbers = 1
   # " auto-open TagBar. (See :help tagbar for alternatives.)
   # "autocmd VimEnter * nested :TagbarOpen
-
-  { fromVam="surround"; }
-
-  { fromVam="commentary"; }
-
-  { fromGitHub="tpope/vim-repeat"; rev="7a6675f092842c8f81e71d5345bd7cdbf3759415"; sha256="0p8g5y3vyl1765lj1r8jpc06l465f9bagivq6k8ndajbg049brl7"; }
-
-  # Increase/decrease selection with +/_
-  { fromGitHub="terryma/vim-expand-region"; rev="v1.2"; sha256="0ab3jq47mc5dxx19isz3w6bhvq3j9ilxrkp7i08l3s94kwc7pg2y"; }
-
-  # Choose window (split) by number, by pressing -
-  { fromGitHub="t9md/vim-choosewin"; rev="7795149689f4793439eb2c402e0c74d172311a6f"; sha256="1lv4fksk1wky7mgk1vsy2mcy1km6jd52wszpvjya6qpg6zi960z0"; config=''
-      nmap - <Plug>(choosewin)
-      " let g:choosewin_overlay_enable = 1
-      let g:choosewin_overlay_enable = 0
-    ''; }
-
-  # Press `gS` on line to split it smart, or `gJ` on first line of block to join it smart.
-  { fromGitHub="AndrewRadev/splitjoin.vim"; rev="a206dbaddef39ac06aee880fbb7a7256bce92899"; sha256="19mwkpg4zq02i1n3xx4apblcm1ckf1vqavybny2qm7ndh003dgs4"; }
-
-  # Highlighting of ANSI escape-coded colours
-  { fromGitHub="powerman/vim-plugin-AnsiEsc"; rev="13.3"; sha256="0xjwp60z17830lvs4y8az8ym4rm2h625k4n52jc0cdhqwv8gwqpg"; }
 
   # Other .vimrc settings, not plugin-related
   { config = ''

@@ -47,4 +47,26 @@
       " use omni-completion by default
       let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
     ''; }
+  { fromGitHub="tpope/vim-unimpaired";
+    rev = "3548479cc154154cbdbb6737ca08a47937cc7113";
+    sha256 = "0p2siip5xf20mg4z1z3m4mp90m026ww3cnkk1n9rc02xhp5xvpsg"; }
+  { fromVam="surround"; }
+  { fromVam="commentary"; }
+  # Choose window (split) by number
+  { fromGitHub="t9md/vim-choosewin";
+    rev = "3e3ab81364ab1f772538c0250c0965f35f986e20";
+    sha256 = "00qakw7701lxmc7nvqf9c7inp7nld21491bvcm4s93z7f5l048vx"; 
+    config = ''
+      nmap - <Plug>(choosewin)
+      " let g:choosewin_overlay_enable = 1  " TODO(akavel): enable on Windows
+      let g:choosewin_overlay_enable = 0
+    ''; }
+  # Auto-reloading of edited plugin files (for plugins development) + 1
+  # dependency (vim-misc)
+  { fromGitHub="xolox/vim-misc";
+    rev = "9b38b8f86aa6a31e189e2a9020b5f0f926495a6b";
+    sha256 = "0rnxvdcq3fawwc72j2cirv2svfw2mg25payhaf122cb4firh6ag0"; }
+  { fromGitHub="xolox/vim-reload";
+    rev = "0a601a668727f5b675cb1ddc19f6861f3f7ab9e1";
+    sha256 = "0vb832l9yxj919f5hfg6qj6bn9ni57gnjd3bj7zpq7d4iv2s4wdh"; }
 ]
