@@ -116,6 +116,68 @@
               " let g:choosewin_overlay_enable = 1
               let g:choosewin_overlay_enable = 0
             ''; }
+          { fromGitHub="AndrewRadev/splitjoin.vim";
+            rev = "20868936ea2af5f8a929b0924db65f8a27035a89";
+            sha256 = "0fxsksv25waxaszl81za6qkfiakr4zm63lib5ryvks5d3xvf3697"; }
+          # Auto-reloading of edited plugin files (for plugins development) + 1
+          # dependency (vim-misc)
+          { fromGitHub="xolox/vim-misc";
+            rev = "9b38b8f86aa6a31e189e2a9020b5f0f926495a6b";
+            sha256 = "0rnxvdcq3fawwc72j2cirv2svfw2mg25payhaf122cb4firh6ag0"; }
+          { fromGitHub="xolox/vim-reload";
+            rev = "0a601a668727f5b675cb1ddc19f6861f3f7ab9e1";
+            sha256 = "0vb832l9yxj919f5hfg6qj6bn9ni57gnjd3bj7zpq7d4iv2s4wdh"; }
+          # Highlighting of ANSI escape-coded colours
+          { fromGitHub="powerman/vim-plugin-AnsiEsc";
+            rev = "1ffd1371ba19e5e287ce9e1a689ca974dc02f2b5";
+            sha256 = "1i1fcan27109iq9p9jmhzx6i68dj524f688d7zv3g7yk94ygabj2"; }
+          # DrawIt (ASCII-Art plugin)
+          { fromGitHub="vim-scripts/DrawIt";
+            rev = "4e824fc939cec81dc2a8f4d91aaeb6151d1cc140";
+            sha256 = "0yn985pj8dn0bzalwfc8ssx62m01307ic1ypymil311m4gzlfy60";
+            config = ''
+              " Custom key mappings.
+              " dia - "DIAgrams"
+              nmap dia <Plug>DrawItStart
+              " dio - "DIagrams Off"
+              nmap dio <Plug>DrawItStop
+            ''; }
+          # Show changed lines on gutter ("signs") with :EC (disable with :DC) + navigate with ]h [h
+          { fromGitHub="chrisbra/changesPlugin";
+            rev = "bfdc9c2e66313ae3dda019f0a8e6cc2e680e3fd6";
+            sha256 = "1hhhkdy18bnkrsi4rnwzcv88mcz63k4jbxxr3j8p9z9jzqdadrx9"; }
+          # Move through words in CamelCase and snake_case words (keys configured below)
+          { fromGitHub="bkad/CamelCaseMotion";
+            rev = "3ae9bf93cce28ddc1f2776999ad516e153769ea4";
+            sha256 = "086q1n0d8xaa0nxvwxlhpwi1hbdz86iaskbl639z788z0ysh4dxw";
+            config = ''
+              " - use Alt+<motion> to move within word - <A-w> right, <A-b> left
+              " - plus additional: <Alt-f> = <Alt-w>, similar as in bash
+              map <silent> <Esc>w <Plug>CamelCaseMotion_w
+              "map <silent> <Esc>f <Plug>CamelCaseMotion_f   " this doesn't seem to work; don't know why
+              map <silent> <Esc>b <Plug>CamelCaseMotion_b
+              map <silent> <Esc>e <Plug>CamelCaseMotion_e
+              "TODO: map <silent> <Alt-g>e <Plug>CamelCaseMotion_ge
+              omap <silent> <Esc>iw <Plug>CamelCaseMotion_iw
+              xmap <silent> <Esc>iw <Plug>CamelCaseMotion_iw
+              omap <silent> <Esc>if <Plug>CamelCaseMotion_iw
+              xmap <silent> <Esc>if <Plug>CamelCaseMotion_iw
+              omap <silent> <Esc>ib <Plug>CamelCaseMotion_ib
+              xmap <silent> <Esc>ib <Plug>CamelCaseMotion_ib
+              omap <silent> <Esc>ie <Plug>CamelCaseMotion_ie
+              xmap <silent> <Esc>ie <Plug>CamelCaseMotion_ie
+            ''; }
+          # Coerce word to:
+          #  crc - camelCase
+          #  crm - MixedCase
+          #  crs - snake_case
+          #  cru - UPPER_CASE
+          # Also, replace all case variations of word in file, e.g.:
+          #  :%Subvert/facilit{y,ies}/building{,s}/g
+          # will replace Facility, FACILITIES, etc, with Building, BUILDINGS, etc.
+          { fromGitHub="tpope/vim-abolish";
+            rev = "05c7d31f6b3066582017edf5198502a94f6a7cb5";
+            sha256 = "1p7kcd3f5rbkqrj8ya7z0fimiyk5h5ybkn26qq10xxfrvlv9x69h"; }
         ];
       in theXim;
 
