@@ -156,5 +156,9 @@
       " mostly only when it's indeed available. If I were to use normal grep, I'd
       " anyway by default go for :cex system('grep ...')
       set grepprg=git\ grep\ -n
+
+      " Use single space ' ' instead of double '  ' after end of sentence
+      " in gq and J commands. See: https://stackoverflow.com/a/4760477/98528
+      set nojoinspaces
     ''; }
 ]
