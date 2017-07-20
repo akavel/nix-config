@@ -17,6 +17,9 @@
                   \ "zpaslab.com/lockerbox/testing/load_test/load_test_client",
                   \ "zpaslab.com/lockerbox/lockerbox/api_key_generator",
                   \ ]
+      " TODO(akavel): somehow, errcheck (and maybe others) don't work for me here; why?
+      let g:go_metalinter_enabled = ['vet','errcheck','megacheck','ineffassign','deadcode','gas','unconvert','structcheck','varcheck']
+      let g:go_metalinter_deadline = "10s"
     '';}
   # Smart and quick file opening with Ctrl-P, by fuzzy path match, like in SublimeText
   { fromVam="ctrlp";

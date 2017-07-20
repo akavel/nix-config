@@ -227,6 +227,9 @@
           " TODO(mateuszc): wtf is the pattern below?
           autocmd FileType go setlocal errorformat-=%C%*\\\s%m
 
+          " Add patterns for gometalinter
+          autocmd FileType go setlocal errorformat+=%f:%l:%c:%t%*[^:]:\\\ %m,%f:%l::%t%*[^:]:\\\ %m
+
           " Add patterns for various Go output formats. (Esp. stacktraces in panics
           " and data race reports.)
           " autocmd FileType go setlocal errorformat+=%A%>%m:,%Z\\\ \\\ \\\ \\\ \\\ %f:%l\\\ +%.%#,%+C\\\ \\\ %m,%A\\\ \\\ %m
