@@ -207,7 +207,13 @@
       augroup akavel_go
           autocmd!
           "autocmd FileType go setlocal omnifunc=AkavelGoImportsComplete
+          " Custom key mappings:
+          " gD - go to Definition in split window
+          " gle - Go caLleEs
+          " glr - Go caLleRs
           autocmd FileType go nmap <buffer> <silent> gD <Plug>(go-def-vertical)
+          autocmd FileType go nmap <buffer> <silent> gle <Plug>(go-callees)
+          autocmd FileType go nmap <buffer> <silent> glr <Plug>(go-callers)
           " vim-go:
           " `:A`  -- goes to $(FILE)_test.go and back
           " `:A!` -- above, even if target doesn't exist
