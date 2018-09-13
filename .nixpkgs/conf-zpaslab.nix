@@ -18,7 +18,10 @@
         ".inputrc" = "set completion-ignore-case On";
         "sample-home-test" = "sample-test";
         # ack: nice navigation if many results; keep colors enabled
-        ".ackrc" = "--pager=less -R";
+        ".ackrc" = ''
+          --pager=less -R
+          --type-set=test:match:/.*_test\.go/
+        '';
       };
     };
 
